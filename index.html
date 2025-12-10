@@ -6,49 +6,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To-Do-List</title>
     <link rel="stylesheet" href="./css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap"
+        rel="stylesheet">
 </head>
 
 <body>
     <div class="container">
-        <header>
-            <h1>To Do List</h1>
+        <header class="header-todo">
+            <h1 class="title">To Do List</h1>
         </header>
         <main>
             <section>
-                <h2>Adicionar tarefas</h2>
-                <form>
-                    <label for="task-title">Nome da tarefa</label>
-                    <input id="task-title" type="text">
-                    <label for="category">Categoria</label>
-                    <select name="category" id="category">
-                        <option value="personal">Pessoal</option>
-                        <option value="entertainment">Entretenimento</option>
-                        <option value="home">Casa</option>
-                        <option value="health">Saúde</option>
-                        <option value="shopping">Compras</option>
-                        <option value="work">Trabalho</option>
-                        <option value="study">Estudos</option>
-                    </select>
-                    <label for="priority">Prioridade</label>
-                    <select name="priority" id="priority">
-                        <option value="p1">Sem prioridade</option>
-                        <option value="p2">Prioridade baixa</option>
-                        <option value="p3">Prioridade média</option>
-                        <option value="p4">Prioridade alta</option>
-                    </select>
-                    <button id="btn-add" type="button">Adicionar tarefa</button>
+                <h2 class="sub-titles">Adicionar tarefas</h2>
+                <form id="task-form">
+                    <div class="input-wrapper">
+                        <label for="task-title">Nome da tarefa</label>
+                        <input id="task-title" type="text">
+                    </div>
+                    <div class="options-wrapper">
+                        <div class="option">
+                            <label for="category">Categoria</label>
+                            <select name="category" id="category">
+                                <option value="personal">Pessoal</option>
+                                <option value="entertainment">Entretenimento</option>
+                                <option value="home">Casa</option>
+                                <option value="health">Saúde</option>
+                                <option value="shopping">Compras</option>
+                                <option value="work">Trabalho</option>
+                                <option value="study">Estudos</option>
+                            </select>
+                        </div>
+                        <div class="option">
+                            <label for="priority">Prioridade</label>
+                            <select name="priority" id="priority">
+                                <option value="p1">Sem prioridade</option>
+                                <option value="p2">Prioridade baixa</option>
+                                <option value="p3">Prioridade média</option>
+                                <option value="p4">Prioridade alta</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button id="btn-add" type="submit">Adicionar tarefa</button>
                 </form>
             </section>
             <section>
-                <h2>Lista de tarefas</h2>
+                <h2 class="sub-titles">Meu Dia</h2>
                 <ul id="todo-list">
-
+                    <li class="task-item">
+                        <span>Compras</span>
+                        <p>Comprar uma geladeira nova</p>
+                        <span>Prioridade média</span>
+                        <input type="checkbox" name="checkbox-task" id="checkbox-task">
+                    </li>
+                    <li class="task-item">
+                        <span>Casa</span>
+                        <p>Lavar a louça</p>
+                        <span>Prioridade baixa</span>
+                        <input type="checkbox" name="checkbox-task" id="checkbox-task">
+                    </li>
+                    <li class="task-item">
+                        <span>Entretenimento</span>
+                        <p>Assistir Superman no cinema</p>
+                        <span>Prioridade alta</span>
+                        <input type="checkbox" name="checkbox-task" id="checkbox-task">
+                    </li>
                 </ul>
             </section>
         </main>
     </div>
-
-    <script src="./js/app.js"></script>
+    <script type="module" src="./js/app.js"></script>
 </body>
 
 

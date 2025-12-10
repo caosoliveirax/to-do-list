@@ -2,5 +2,104 @@
 @import url('./reset.css');
 
 body {
-    font-family: 'Courier New', Courier, sans-serif;
+    font-family: "Lato", sans-serif;
+}
+
+.container {
+    height: 100%;
+    width: 100%;
+    margin: 0 auto;
+    padding: 40px;
+}
+
+.header-todo {
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.title {
+    font-size: 3rem;
+    font-style: italic;
+    font-weight: 400;
+}
+
+.sub-titles {
+    margin: 2rem 0;
+    text-align: center;
+}
+
+#task-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.options-wrapper {
+    display: flex;
+    flex-direction: row;
+    column-gap: 16px;
+}
+
+input, select {
+    margin: 0.5rem 0;
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+}
+
+#task-title {
+    height: 40px;
+    padding: 8px 16px;
+}
+
+.option {
+    text-align: center;
+}
+
+#btn-add {
+    margin-top: 20px;
+    padding: 10px;
+    font-size: 1rem;
+}
+
+#todo-list {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
+}
+
+.task-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+
+.task-item p, .task-item span {
+    margin-bottom: 0.5rem;
+}
+
+#checkbox-task {
+    width: 20px;
+}
+
+.input-error {
+    border: 1px solid red;
+}
+
+.error-message {
+    position: absolute;
+    right: 16px;
+    bottom: 20px;
+    color: red;
+    font-size: 0.75rem;
 }
