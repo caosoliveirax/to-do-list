@@ -5,19 +5,22 @@ export function getTaskData() {
 
     const title = inputTask.value
     const category = selectCategory.options[selectCategory.selectedIndex].text
-    const priority = selectPriority.options[selectPriority.selectedIndex].text
+    const priorityValue = selectPriority.value
+    const priorityLabel = selectPriority.options[selectPriority.selectedIndex].text
 
     if (title.length > 0) {
         return {
             title,
             category,
-            priority
+            priorityValue,
+            priorityLabel
         }
     }
 
 }
 
 export function createTaskItem(task) {
+
     const taskItem = document.createElement('li');
     taskItem.classList.add('task-item');
 
@@ -27,7 +30,16 @@ export function createTaskItem(task) {
     const taskTitle = document.createElement('p');
     taskItem.appendChild(taskTitle)
     
-    const taskPriority = document.createElement('span');
+    const priorityIcons = {
+        'none': './images/tiers/none.svg',
+        'low': './images/tiers/low.svg',
+        'medium': './images/tiers/medium.svg',
+        'high': './images/tiers/high.svg'
+    };
+
+    const taskPriority = document.createElement('img');
+    taskPriority.src = priorityIcons[task.priorityValue];
+    taskPriority.alt = task.priorityLabel;
     taskItem.appendChild(taskPriority)
     
     const taskCheckbox = document.createElement('input');
@@ -39,7 +51,6 @@ export function createTaskItem(task) {
 
     taskTitle.textContent = task.title
     taskCategory.textContent = task.category
-    taskPriority.textContent = task.priority
 
     return taskItem
 }

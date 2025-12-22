@@ -10,7 +10,6 @@ taskInputName.addEventListener('focus', () => {
     if (errorMessage) {
         errorMessage.remove();
     }
-
 })
 
 formTask.addEventListener('submit', (e) => {
