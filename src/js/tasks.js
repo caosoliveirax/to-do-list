@@ -31,13 +31,14 @@ export function createTaskItem(task) {
     taskItem.appendChild(taskTitle)
     
     const priorityIcons = {
-        'none': './images/tiers/none.svg',
-        'low': './images/tiers/low.svg',
-        'medium': './images/tiers/medium.svg',
-        'high': './images/tiers/high.svg'
+        'none': './assets/images/tiers/none.svg',
+        'low': './assets/images/tiers/low.svg',
+        'medium': './assets/images/tiers/medium.svg',
+        'high': './assets/images/tiers/high.svg'
     };
 
     const taskPriority = document.createElement('img');
+    taskPriority.classList.add('priority-icon')
     taskPriority.src = priorityIcons[task.priorityValue];
     taskPriority.alt = task.priorityLabel;
     taskItem.appendChild(taskPriority)
@@ -46,8 +47,20 @@ export function createTaskItem(task) {
     taskCheckbox.type = 'checkbox'
     taskCheckbox.id = 'task-checkbox'
     taskCheckbox.name = 'task-checkbox'
-
     taskItem.appendChild(taskCheckbox)
+
+    const removeBtn = document.createElement('button');
+    removeBtn.type = 'button'
+    removeBtn.classList.add('remove-button')
+    taskItem.appendChild(removeBtn)
+    const removeIcon = document.createElement('img');
+    removeIcon.src = './assets/remove.svg'
+    removeIcon.alt = 'Remover tarefa'
+    removeBtn.appendChild(removeIcon)
+
+    removeBtn.addEventListener('click', () => {
+        taskItem.remove()
+    })
 
     taskTitle.textContent = task.title
     taskCategory.textContent = task.category
