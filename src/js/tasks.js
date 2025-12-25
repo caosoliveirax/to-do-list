@@ -45,8 +45,8 @@ export function createTaskItem(task) {
     
     const taskCheckbox = document.createElement('input');
     taskCheckbox.type = 'checkbox'
-    taskCheckbox.id = 'task-checkbox'
     taskCheckbox.name = 'task-checkbox'
+    taskCheckbox.classList.add('task-checkbox')
     taskItem.appendChild(taskCheckbox)
 
     const removeBtn = document.createElement('button');
@@ -57,10 +57,6 @@ export function createTaskItem(task) {
     removeIcon.src = './assets/remove.svg'
     removeIcon.alt = 'Remover tarefa'
     removeBtn.appendChild(removeIcon)
-
-    removeBtn.addEventListener('click', () => {
-        taskItem.remove()
-    })
 
     taskTitle.textContent = task.title
     taskCategory.textContent = task.category

@@ -106,7 +106,7 @@ input, select {
 
 
 .task-item p, .task-item span {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
 }
 
 .priority-icon {
@@ -135,8 +135,35 @@ input, select {
     height: 100%;
 }
 
-#task-checkbox {
-    width: 20px;
+.task-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    box-sizing: content-box;
+
+    width: 28px;
+    height: 28px;
+    margin: 0;
+    border: 1px solid #333;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.task-checkbox:checked {
+    background-color: #333;
+    border-color: #333;
+}
+
+.task-checkbox::after {
+    content: '';
+    width: 6px;
+    height: 12px;
+    border: solid white;
+    border-width: 0px 2px 2px 0;
+    transform: rotate(45deg);
+    margin-bottom: 2px;
 }
 
 .input-error {
@@ -149,4 +176,10 @@ input, select {
     bottom: 20px;
     color: red;
     font-size: 0.75rem;
+}
+
+.completed {
+    text-decoration: line-through;
+    opacity: 0.5;
+    background-color: #f0f0f0;
 }

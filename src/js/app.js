@@ -72,3 +72,20 @@ taskForm.addEventListener('submit', (e) => {
 
     taskList.insertBefore(taskElement, firstTask);
 })
+
+taskList.addEventListener('click', (e) => {
+    const targetElement = e.target;
+    const taskItem = targetElement.closest('.task-item');
+
+    if (!taskItem) return;
+
+    if (targetElement.classList.contains('task-checkbox')) {
+        taskItem.classList.toggle('completed');
+    }
+
+    const removeBtn = targetElement.closest('.remove-button');
+
+    if (removeBtn) {
+        taskItem.remove()
+    }
+    })  
