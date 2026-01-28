@@ -1,44 +1,17 @@
 import { getTaskData, createTaskItem } from "./tasks.js";
+import { getTasksFromStorage, addTaskToStorage, removeTaskFromStorage, toggleTaskCompletionInStorage } from "./storage.js";
 
 const taskForm = document.getElementById('task-form');
 const taskInputName = document.getElementById('task-title');
 const taskList = document.getElementById('todo-list');
 
-const initialTasks = [
-    {
-        title: 'Participar da reunião da empresa', 
-        category: 'Trabalho', 
-        priorityValue: 'high',
-        priorityLabel: 'Prioridade alta'
-    },
-    {
-        title: 'Comprar uma geladeira nova', 
-        category: 'Compras', 
-        priorityValue: 'medium',
-        priorityLabel: 'Prioridade média'
-    },
-    {
-        title: 'Lavar a louça', 
-        category: 'Casa', 
-        priorityValue: 'low',
-        priorityLabel: 'Prioridade baixa'
-    },
-    {
-        title: 'Assistir Superman', 
-        category: 'Entretenimento', 
-        priorityValue: 'none',
-        priorityLabel: 'Sem prioridade'
-    }
-]
+const localTasks = getTasksFromStorage();
+localTasks.forEach(task => {
+    const taskElement = createTaskItem(task);
+    const firstTask = taskList.firstChild;
 
-function init() {
-    initialTasks.forEach( task => {
-        const taskElement = createTaskItem(task);
-        taskList.appendChild(taskElement);
-    })
-}
-
-init();
+    taskList.insertBefore(taskElement, firstTask);
+})
 
 taskInputName.addEventListener('focus', () => {
     taskInputName.classList.remove('input-error');
@@ -66,11 +39,15 @@ taskForm.addEventListener('submit', (e) => {
         return;
     }
 
-    const taskElement = createTaskItem(taskData);
+    const taskSaved = addTaskToStorage(taskData);
 
-    const firstTask = taskList.firstChild;
-
-    taskList.insertBefore(taskElement, firstTask);
+    if (taskSaved) {
+        const taskElement = createTaskItem(taskData);
+        const firstTask = taskList.firstChild;
+        taskList.insertBefore(taskElement, firstTask);
+    } else {
+        alert('Esta tarefa já existe.');
+    }
 })
 
 taskList.addEventListener('click', (e) => {
@@ -81,11 +58,16 @@ taskList.addEventListener('click', (e) => {
 
     if (targetElement.classList.contains('task-checkbox')) {
         taskItem.classList.toggle('completed');
+
+        const taskTitle = taskItem.querySelector('p').textContent;
+        toggleTaskCompletionInStorage(taskTitle);
     }
 
     const removeBtn = targetElement.closest('.remove-button');
 
     if (removeBtn) {
-        taskItem.remove()
+        const taskTitle = taskItem.querySelector('p').textContent;
+        removeTaskFromStorage(taskTitle);
+        taskItem.remove();
     }
     })  

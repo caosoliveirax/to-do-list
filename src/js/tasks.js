@@ -13,14 +13,14 @@ export function getTaskData() {
             title,
             category,
             priorityValue,
-            priorityLabel
+            priorityLabel,
+            completed: false
         }
     }
 
 }
 
 export function createTaskItem(task) {
-
     const taskItem = document.createElement('li');
     taskItem.classList.add('task-item');
 
@@ -60,6 +60,11 @@ export function createTaskItem(task) {
 
     taskTitle.textContent = task.title
     taskCategory.textContent = task.category
+
+    if (task.completed) {
+        taskItem.classList.add('completed');
+        taskCheckbox.checked = true;
+    }
 
     return taskItem
 }
