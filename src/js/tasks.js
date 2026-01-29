@@ -1,9 +1,11 @@
 export function getTaskData() {
     const inputTask = document.getElementById('task-title');
+    const inputDateTime = document.getElementById('task-datetime');
     const selectCategory = document.getElementById('category');
     const selectPriority = document.getElementById('priority');
 
     const title = inputTask.value
+    const dateTime = inputDateTime.value;
     const category = selectCategory.options[selectCategory.selectedIndex].text
     const priorityValue = selectPriority.value
     const priorityLabel = selectPriority.options[selectPriority.selectedIndex].text
@@ -11,6 +13,7 @@ export function getTaskData() {
     if (title.length > 0) {
         return {
             title,
+            dateTime,
             category,
             priorityValue,
             priorityLabel,
@@ -25,11 +28,28 @@ export function createTaskItem(task) {
     taskItem.classList.add('task-item');
 
     const taskCategory = document.createElement('span');
-    taskItem.appendChild(taskCategory)
+    taskItem.appendChild(taskCategory);
     
     const taskTitle = document.createElement('p');
-    taskItem.appendChild(taskTitle)
-    
+    taskItem.appendChild(taskTitle);
+
+    const taskDateTime = document.createElement('span');
+    taskItem.appendChild(taskDateTime);
+
+    if (task.dateTime) {
+    const dateObj = new Date(task.dateTime);
+    const formattedDate = dateObj.toLocaleDateString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'
+    }).replace(',', ' às'); 
+
+    taskDateTime.textContent = formattedDate;
+} else {
+    taskDateTime.textContent = '';
+}
+
     const priorityIcons = {
         'none': './assets/images/tiers/none.svg',
         'low': './assets/images/tiers/low.svg',
