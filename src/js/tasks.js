@@ -99,10 +99,10 @@ export function createTaskItem(task) {
     }
 
     const priorityIcons = {
-        none: './assets/images/tiers/none.svg',
-        low: './assets/images/tiers/low.svg',
-        medium: './assets/images/tiers/medium.svg',
-        high: './assets/images/tiers/high.svg',
+        none: './src/assets/none.svg',
+        low: './src/assets/low.svg',
+        medium: './src/assets/medium.svg',
+        high: './src/assets/high.svg',
     };
 
     const taskPriority = document.createElement('img');
@@ -122,7 +122,7 @@ export function createTaskItem(task) {
     removeBtn.classList.add('remove-button');
     taskItem.appendChild(removeBtn);
     const removeIcon = document.createElement('img');
-    removeIcon.src = './assets/remove.svg';
+    removeIcon.src = './src/assets/remove.svg';
     removeIcon.alt = 'Remover tarefa';
     removeBtn.appendChild(removeIcon);
 
