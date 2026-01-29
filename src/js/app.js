@@ -5,6 +5,29 @@ const taskForm = document.getElementById('task-form');
 const taskInputName = document.getElementById('task-title');
 const taskList = document.getElementById('todo-list');
 
+const emptyStateMessage = document.getElementById('empty-state');
+
+function toggleEmptyState() {
+    const hasTasks = taskList.children.length > 0;
+
+    if (hasTasks) {
+        emptyStateMessage.classList.add('hidden')
+    } else {
+        emptyStateMessage.classList.remove('hidden')
+    }
+}
+
+const dateElement = document.getElementById('today');
+    if (dateElement) {
+        const now = new Date();
+
+        const options = {weekday: 'long', day: 'numeric', month: 'long'};
+        const dateString = now.toLocaleDateString('pt-BR', options);
+        const formattedDate = dateString.charAt(0).toUpperCase() + dateString.slice(1);
+
+        dateElement.textContent = formattedDate;
+    }
+
 const localTasks = getTasksFromStorage();
 localTasks.forEach(task => {
     const taskElement = createTaskItem(task);
@@ -12,6 +35,8 @@ localTasks.forEach(task => {
 
     taskList.insertBefore(taskElement, firstTask);
 })
+
+toggleEmptyState();
 
 taskInputName.addEventListener('focus', () => {
     taskInputName.classList.remove('input-error');
@@ -45,9 +70,12 @@ taskForm.addEventListener('submit', (e) => {
         const taskElement = createTaskItem(taskData);
         const firstTask = taskList.firstChild;
         taskList.insertBefore(taskElement, firstTask);
+        
     } else {
         alert('Esta tarefa já existe.');
     }
+
+    toggleEmptyState();
 })
 
 taskList.addEventListener('click', (e) => {
@@ -69,5 +97,6 @@ taskList.addEventListener('click', (e) => {
         const taskTitle = taskItem.querySelector('p').textContent;
         removeTaskFromStorage(taskTitle);
         taskItem.remove();
+        toggleEmptyState();
     }
     })  
