@@ -1,4 +1,4 @@
-import { getTaskData, createTaskItem } from "./tasks.js";
+import { getTaskData, createTaskItem, getCountdownText } from "./tasks.js";
 import { getTasksFromStorage, addTaskToStorage, removeTaskFromStorage, toggleTaskCompletionInStorage } from "./storage.js";
 
 const taskForm = document.getElementById('task-form');
@@ -100,3 +100,29 @@ taskList.addEventListener('click', (e) => {
         toggleEmptyState();
     }
     })  
+
+function updateAllCountdowns() {
+    const allTasks = document.querySelectorAll('.task-item');
+    
+    allTasks.forEach(taskItem => {
+        const deadline = taskItem.dataset.deadline;
+
+        if(!deadline || taskItem.classList.contains('completed')) return;
+
+        const countdownData = getCountdownText(deadline);
+        const countdownElement = taskItem.querySelector('.task-countdown');
+
+        if (countdownElement && countdownData) {
+            countdownElement.textContent = countdownData.text;
+
+            if (countdownData.isOverdue) {
+                taskItem.classList.add('overdue');
+            } else {
+                taskItem.classList.remove('overdue');
+            }
+        }
+    })
+}
+
+setInterval(updateAllCountdowns, 60000);
+updateAllCountdowns();

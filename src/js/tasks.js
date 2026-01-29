@@ -20,7 +20,29 @@ export function getTaskData() {
             completed: false
         }
     }
+}
 
+export function getCountdownText(deadline) {
+    if (!deadline) return null;
+
+    const now = new Date().getTime();
+    const targetTime = new Date(deadline).getTime();
+    const timeDifference = targetTime - now;
+
+    if (timeDifference <= 0) {
+        return { text: 'Expirado!', isOverdue: true };
+    }
+
+    const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+
+    let text = 'Restam: ';
+    if (days > 0) text += `${days}d `;
+    if (hours > 0) text += `${hours}h `;
+    text += `${minutes}m`;
+
+    return { text, isOverdue: false };
 }
 
 export function createTaskItem(task) {
@@ -29,12 +51,31 @@ export function createTaskItem(task) {
 
     const taskCategory = document.createElement('span');
     taskItem.appendChild(taskCategory);
+    taskCategory.textContent = task.category
     
     const taskTitle = document.createElement('p');
     taskItem.appendChild(taskTitle);
+    taskTitle.textContent = task.title
 
     const taskDateTime = document.createElement('span');
     taskItem.appendChild(taskDateTime);
+
+    if (task.dateTime) {
+        taskItem.dataset.deadline = task.dateTime; 
+    }
+
+    const taskCountdown = document.createElement('span');
+    taskCountdown.classList.add('task-countdown');
+
+    if (task.dateTime) {
+        const countdownData = getCountdownText(task.dateTime);
+        taskCountdown.textContent = countdownData.text;
+        
+        if (countdownData.isOverdue) {
+            taskItem.classList.add('overdue');
+        }
+    }
+    taskItem.appendChild(taskCountdown);
 
     if (task.dateTime) {
     const dateObj = new Date(task.dateTime);
@@ -78,13 +119,9 @@ export function createTaskItem(task) {
     removeIcon.alt = 'Remover tarefa'
     removeBtn.appendChild(removeIcon)
 
-    taskTitle.textContent = task.title
-    taskCategory.textContent = task.category
-
     if (task.completed) {
         taskItem.classList.add('completed');
         taskCheckbox.checked = true;
     }
-
     return taskItem
 }

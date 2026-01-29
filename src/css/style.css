@@ -199,3 +199,19 @@ input, select {
 .hidden {
     display: none
 }
+
+.task-countdown {
+    font-size: 0.85rem;
+    color: #555;
+    margin-bottom: 0.5rem; 
+    display: block;
+}
+
+.task-item.overdue {
+    border-color: #ff4d4d; 
+}
+
+.task-item.overdue .task-countdown {
+    color: #ff4d4d;
+    font-weight: bold;
+}
