@@ -1,5 +1,10 @@
-import { getTaskData, createTaskItem, getCountdownText } from "./tasks.js";
-import { getTasksFromStorage, addTaskToStorage, removeTaskFromStorage, toggleTaskCompletionInStorage } from "./storage.js";
+import { getTaskData, createTaskItem, getCountdownText } from './tasks.js';
+import {
+    getTasksFromStorage,
+    addTaskToStorage,
+    removeTaskFromStorage,
+    toggleTaskCompletionInStorage,
+} from './storage.js';
 
 const taskForm = document.getElementById('task-form');
 const taskInputName = document.getElementById('task-title');
@@ -11,30 +16,31 @@ function toggleEmptyState() {
     const hasTasks = taskList.children.length > 0;
 
     if (hasTasks) {
-        emptyStateMessage.classList.add('hidden')
+        emptyStateMessage.classList.add('hidden');
     } else {
-        emptyStateMessage.classList.remove('hidden')
+        emptyStateMessage.classList.remove('hidden');
     }
 }
 
 const dateElement = document.getElementById('today');
-    if (dateElement) {
-        const now = new Date();
+if (dateElement) {
+    const now = new Date();
 
-        const options = {weekday: 'long', day: 'numeric', month: 'long'};
-        const dateString = now.toLocaleDateString('pt-BR', options);
-        const formattedDate = dateString.charAt(0).toUpperCase() + dateString.slice(1);
+    const options = { weekday: 'long', day: 'numeric', month: 'long' };
+    const dateString = now.toLocaleDateString('pt-BR', options);
+    const formattedDate =
+        dateString.charAt(0).toUpperCase() + dateString.slice(1);
 
-        dateElement.textContent = formattedDate;
-    }
+    dateElement.textContent = formattedDate;
+}
 
 const localTasks = getTasksFromStorage();
-localTasks.forEach(task => {
+localTasks.forEach((task) => {
     const taskElement = createTaskItem(task);
     const firstTask = taskList.firstChild;
 
     taskList.insertBefore(taskElement, firstTask);
-})
+});
 
 toggleEmptyState();
 
@@ -45,14 +51,14 @@ taskInputName.addEventListener('focus', () => {
     if (errorMessage) {
         errorMessage.remove();
     }
-})
+});
 
 taskForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
     const taskData = getTaskData();
 
-    if(!taskData) { 
+    if (!taskData) {
         taskInputName.classList.add('input-error');
 
         const errorMessage = document.createElement('p');
@@ -70,13 +76,12 @@ taskForm.addEventListener('submit', (e) => {
         const taskElement = createTaskItem(taskData);
         const firstTask = taskList.firstChild;
         taskList.insertBefore(taskElement, firstTask);
-        
     } else {
         alert('Esta tarefa já existe.');
     }
 
     toggleEmptyState();
-})
+});
 
 taskList.addEventListener('click', (e) => {
     const targetElement = e.target;
@@ -99,15 +104,15 @@ taskList.addEventListener('click', (e) => {
         taskItem.remove();
         toggleEmptyState();
     }
-    })  
+});
 
 function updateAllCountdowns() {
     const allTasks = document.querySelectorAll('.task-item');
-    
-    allTasks.forEach(taskItem => {
+
+    allTasks.forEach((taskItem) => {
         const deadline = taskItem.dataset.deadline;
 
-        if(!deadline || taskItem.classList.contains('completed')) return;
+        if (!deadline || taskItem.classList.contains('completed')) return;
 
         const countdownData = getCountdownText(deadline);
         const countdownElement = taskItem.querySelector('.task-countdown');
@@ -121,7 +126,7 @@ function updateAllCountdowns() {
                 taskItem.classList.remove('overdue');
             }
         }
-    })
+    });
 }
 
 setInterval(updateAllCountdowns, 60000);

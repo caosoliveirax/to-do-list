@@ -7,25 +7,25 @@ export function addTaskToStorage(task) {
     let tasks = JSON.parse(localStorage.getItem('myTasks')) || [];
     const existingTask = tasks.find((t) => t.title === task.title);
 
-    if(!existingTask) {
+    if (!existingTask) {
         tasks.push(task);
         localStorage.setItem('myTasks', JSON.stringify(tasks));
-        return true
+        return true;
     } else {
-        return false
+        return false;
     }
 }
 
 export function removeTaskFromStorage(title) {
     let tasks = JSON.parse(localStorage.getItem('myTasks')) || [];
-    tasks = tasks.filter( task => task.title !== title);
+    tasks = tasks.filter((task) => task.title !== title);
     localStorage.setItem('myTasks', JSON.stringify(tasks));
 }
 
 export function toggleTaskCompletionInStorage(title) {
     let tasks = JSON.parse(localStorage.getItem('myTasks')) || [];
-    
-    tasks = tasks.map(task => {
+
+    tasks = tasks.map((task) => {
         if (task.title === title) {
             return { ...task, completed: !task.completed };
         }
