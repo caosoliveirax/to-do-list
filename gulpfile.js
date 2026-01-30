@@ -14,19 +14,21 @@ function html() {
 }
 
 function css() {
-  return gulp.src('src/css/*.css')
-    .pipe(cleanCSS())
-    .pipe(gulp.dest('dist/css'))
+  return gulp.src('src/css/main.css')
+    .pipe(cleanCSS({
+      inline: ['local']
+    }))
+    .pipe(gulp.dest('dist/src/css'))
 }
 
 function js() {
   return gulp.src('src/js/*.js')
     .pipe(terser())
-    .pipe(gulp.dest('dist/js'))
+    .pipe(gulp.dest('dist/src/js'))
 }
 
 function assets() {
-  return gulp.src('src/assets/*')
+  return gulp.src('src/assets/**/*')
     .pipe(svgmin({
       plugins: [
         {
@@ -40,9 +42,9 @@ function assets() {
 
 function watchFiles() {
   gulp.watch('index.html', html);
-    gulp.watch('src/css/*.css', css);
+    gulp.watch('src/css/**/*.css', css);
     gulp.watch('src/js/*.js', js);
-    gulp.watch('assets/**/*', assets);
+    gulp.watch('src/assets/**/*', assets);
 }
 
 export { html, css, js, assets };

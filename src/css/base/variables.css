@@ -1,0 +1,46 @@
+:root {
+  /* Main */
+  --color-primary: #e46b1b;
+
+  /* Feedback */
+    --color-overdue: #ff4d4d;
+
+  /* Neutrals */
+    --color-text-main: #333333;
+    --color-text-light: #555555;
+    --color-text-placeholder: #888888;
+    --color-border: #cccccc;
+    --color-bg: #ffffff;
+    --color-bg-secondary: #f0f0f0;
+
+    /* Category */
+    --color-cat-personal: #FF6B6B;
+    --color-cat-work: #4ECDC4;
+    --color-cat-study: #FFE66D;
+    --color-cat-health: #95E1D3;
+    --color-cat-shopping: #F7D794;
+    --color-cat-home: #778BEB;
+    --color-cat-entertainment: #F8A5C2;
+
+    /* Typography */
+    --font-family-base: 'Lato', sans-serif;
+    --font-size-base: 16px;
+    --font-size-sm: 0.85rem;
+    --font-size-lg: 1.25rem;
+    --font-size-xl: 3rem;
+
+    /* Spacing */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 40px;
+
+    /* Borders */
+    --border-radius-sm: 4px;
+    --border-radius-md: 8px;
+    --border-width: 1px;
+
+    /* Transitions */
+    --transition-fast: 0.2s ease-in-out;
+}
