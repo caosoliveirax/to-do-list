@@ -1,0 +1,21 @@
+body {
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-base);
+    color: var(--color-text-main);     
+    line-height: 1.5;
+}
+
+.title {
+    font-size: var(--font-size-xl);
+    font-style: italic;
+    font-weight: 800;
+    color: var(--color-primary);
+}
+
+.sub-titles {
+    font-size: var(--font-size-lg);
+    margin: 2rem 0 1rem 0;
+    text-align: center;
+    color: var(--color-primary);
+}
+
