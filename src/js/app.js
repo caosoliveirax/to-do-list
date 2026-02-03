@@ -117,5 +117,15 @@ function updateAllCountdowns() {
     });
 }
 
+flatpickr("#task-datetime", {
+    enableTime: true,
+    dateFormat: "Y-m-d H:i",
+    altInput: true,
+    altFormat: "j \\de F, H:i",
+    locale: "pt",
+    time_24hr: true,
+    disableMobile: "true"
+});
+
 setInterval(updateAllCountdowns, 60000);
 updateAllCountdowns();
