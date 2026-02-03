@@ -14,62 +14,60 @@
 </head>
 
 <body>
-  <div class="container">
-    <header class="header-todo">
-      <h1 class="title">To Do List</h1>
-    </header>
-    <main>
-      <section>
-        <h2 class="sub-titles">Adicionar tarefas</h2>
-        <form id="task-form">
-          <div class="input-wrapper">
-            <input id="task-title" type="text" placeholder=" ">
-            <label for="task-title">Nome da tarefa</label>
-          </div>
-          <div class="input-wrapper">
-            <input id="task-datetime" type="datetime-local" placeholder=" ">
-            <label for="task-datetime">Data e Hora</label>
-          </div>
-          <div class="options-wrapper">
-            <div class="option">
-              <label for="category">Categoria</label>
-              <select name="category" id="category">
-                <option value="personal">Pessoal</option>
-                <option value="entertainment">Entretenimento</option>
-                <option value="home">Casa</option>
-                <option value="health">Saúde</option>
-                <option value="shopping">Compras</option>
-                <option value="work">Trabalho</option>
-                <option value="study">Estudos</option>
-              </select>
-            </div>
-            <div class="option">
-              <label for="priority">Prioridade</label>
-              <select name="priority" id="priority">
-                <option value="none">Sem prioridade</option>
-                <option value="low">Prioridade baixa</option>
-                <option value="medium">Prioridade média</option>
-                <option value="high">Prioridade alta</option>
-              </select>
-            </div>
-          </div>
-          <button id="btn-add" type="submit">Adicionar tarefa</button>
-        </form>
-      </section>
-      <section>
-        <h2 class="sub-titles">Meu Dia
-          <br>
-          <span id="today"></span>
-        </h2>
-        <ul id="todo-list">
+  <header class="header-todo">
+    <h1 class="title">Slice Of Lice</h1>
+  </header>
+  <main class="container">
+    <section>
+      <h2 class="sub-titles">Meu Dia
+        <br>
+        <span id="today"></span>
+      </h2>
+      <ul id="todo-list">
 
-        </ul>
-        <div id="empty-state" class="empty-state">
-          <p>Sua lista está vazia. Que tal adicionar uma tarefa?</p>
+      </ul>
+      <div id="empty-state" class="empty-state">
+        <p>Sua lista está vazia. Que tal adicionar uma tarefa?</p>
+      </div>
+    </section>
+    <section>
+      <form id="task-form">
+        <div class="input-wrapper">
+          <input id="task-title" type="text" placeholder=" exemplo: Estudar JavaScript">
+          <p>Por favor, preencha o nome da tarefa</p>
+          <label for="task-title">Nome da tarefa</label>
         </div>
-      </section>
-    </main>
-  </div>
+        <div class="input-wrapper">
+          <input id="task-datetime" type="text" class="input-date" placeholder="Selecione o dia e a hora">
+          <label for="task-datetime">Data e Hora</label>
+        </div>
+        <div class="options-wrapper">
+          <div class="option">
+            <select name="category" id="category">
+              <option value="personal">Pessoal</option>
+              <option value="entertainment">Entretenimento</option>
+              <option value="home">Casa</option>
+              <option value="health">Saúde</option>
+              <option value="shopping">Compras</option>
+              <option value="work">Trabalho</option>
+              <option value="study">Estudos</option>
+            </select>
+            <label for="category">Categoria</label>
+          </div>
+          <div class="option">
+            <select name="priority" id="priority">
+              <option value="none">Sem prioridade</option>
+              <option value="low">Prioridade baixa</option>
+              <option value="medium">Prioridade média</option>
+              <option value="high">Prioridade alta</option>
+            </select>
+            <label for="priority">Prioridade</label>
+          </div>
+        </div>
+        <button id="btn-add" type="submit">Adicionar tarefa</button>
+      </form>
+    </section>
+  </main>
   <script type="module" src="./src/js/app.js"></script>
 </body>
 

@@ -8,8 +8,8 @@ import {
 
 const taskForm = document.getElementById('task-form');
 const taskInputName = document.getElementById('task-title');
+const inputWrapper = document.querySelector('.input-wrapper');
 const taskList = document.getElementById('todo-list');
-
 const emptyStateMessage = document.getElementById('empty-state');
 
 function toggleEmptyState() {
@@ -45,12 +45,7 @@ localTasks.forEach((task) => {
 toggleEmptyState();
 
 taskInputName.addEventListener('focus', () => {
-    taskInputName.classList.remove('input-error');
-
-    const errorMessage = document.querySelector('.error-message');
-    if (errorMessage) {
-        errorMessage.remove();
-    }
+      inputWrapper.classList.remove('has-error');
 });
 
 taskForm.addEventListener('submit', (e) => {
@@ -59,15 +54,8 @@ taskForm.addEventListener('submit', (e) => {
     const taskData = getTaskData();
 
     if (!taskData) {
-        taskInputName.classList.add('input-error');
-
-        const errorMessage = document.createElement('p');
-
-        errorMessage.textContent = 'Por favor, preencha o nome da tarefa';
-        errorMessage.classList.add('error-message');
-        taskInputName.insertAdjacentElement('afterend', errorMessage);
-
-        return;
+      inputWrapper.classList.add('has-error');
+      return;
     }
 
     const taskSaved = addTaskToStorage(taskData);

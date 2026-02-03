@@ -1,0 +1,130 @@
+#task-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--spacing-sm);
+}
+
+input,
+select {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    margin: 0.5rem 0;
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    background-color: var(--color-bg);
+    color: var(--color-text-main);
+    font-family: var(--font-family-base);
+    font-size: clamp(var(--font-size-sm), 3vw, var(--font-size-base));
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+input:focus::placeholder {
+    color: transparent;
+  }
+
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    background-image: url("../../assets/caret-down.svg");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1em;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(228, 107, 27, 0.1);
+  }
+
+  .input-wrapper input:focus ~ label,
+  .option select:focus ~ label {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+
+#task-title,
+#task-datetime,
+select {
+    height: 48px;
+}
+
+.input-wrapper {
+    position: relative;
+    margin-bottom: var(--spacing-sm);
+}
+
+.input-wrapper label, .option label {
+    position: absolute;
+    top: 8px;
+    left: var(--spacing-md);
+    font-weight: 500;
+    transform: translateY(-50%);
+    color: var(--color-text-placeholder);
+    transition: all var(--transition-fast);
+    background-color: var(--color-bg);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: 8px;
+    padding: 0 var(--spacing-xs);
+    z-index: 10;
+}
+
+.options-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: var(--spacing-md);
+}
+
+.option {
+  position: relative;
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+}
+
+.has-error input ~ label {
+    background-color: var(--color-bg);
+    color: var(--color-overdue);
+    border-color: var(--color-overdue);
+    visibility: visible;
+    opacity: 1;
+}
+
+.input-wrapper p {
+    display: none;
+    color: var(--color-overdue);
+    font-size: var(--font-size-sm);
+}
+
+.input-wrapper.has-error p {
+    display: block;
+    color: var(--color-overdue);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    margin-top: var(--spacing-xs);
+    position: absolute;
+    right: 16px;
+    bottom: 20px;
+    pointer-events: none;
+}
+
+.input-wrapper.has-error input {
+  border-color: var(--color-overdue);
+  animation: shake 0.3s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-40%); }
+    to { opacity: 1; transform: translateY(-50%); }
+}
