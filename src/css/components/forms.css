@@ -5,8 +5,7 @@
     gap: var(--spacing-sm);
 }
 
-input,
-select {
+input {
     width: 100%;
     padding: var(--spacing-md) var(--spacing-md) var(--spacing-sm) var(--spacing-md);
     margin: 0.5rem 0;
@@ -23,37 +22,20 @@ input:focus::placeholder {
     color: transparent;
   }
 
-select {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-image: url("../../assets/caret-down.svg");
-    background-repeat: no-repeat;
-    background-position: right 1rem center;
-    background-size: 1em;
-}
-
-select:focus {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3e%3crect width='256' height='256' fill='none'/%3e%3cpolyline points='208 96 128 176 48 96' fill='none' stroke='%23e46b1b' stroke-linecap='round' stroke-linejoin='round' stroke-width='16'/%3e%3c/svg%3e");
-}
-
-input:focus,
-select:focus {
+input:focus {
     outline: none;
     border-color: var(--color-primary);
     box-shadow: 0 0 0 3px rgba(228, 107, 27, 0.1);
 }
 
-  .input-wrapper input:focus ~ label,
-  .option select:focus ~ label {
+.input-wrapper input:focus ~ label {
     color: var(--color-primary);
     border-color: var(--color-primary);
 }
 
 
 #task-title,
-.input-date,
-select {
+.input-date {
     height: 48px;
 }
 
@@ -74,7 +56,7 @@ select {
     margin-bottom: var(--spacing-sm);
 }
 
-.input-wrapper label, .option label {
+.input-wrapper label {
     position: absolute;
     top: 8px;
     left: var(--spacing-md);
@@ -91,15 +73,8 @@ select {
 
 .options-wrapper {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: var(--spacing-md);
-}
-
-.option {
-  position: relative;
-    flex: 1;
-    width: 100%;
-    min-width: 0;
 }
 
 .has-error input ~ label {
@@ -131,6 +106,23 @@ select {
 .input-wrapper.has-error input {
   border-color: var(--color-overdue);
   animation: shake 0.3s ease-in-out;
+}
+
+.cat-item input[type="radio"], .prio-item input[type="radio"] {
+    display: none;
+}
+
+.section-label {
+    display: block;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-placeholder);
+    margin-bottom: var(--spacing-sm);
+    font-weight: 500;
+}
+
+.cat-card span, .prio-card span {
+    font-size: 0.75rem;
+    font-weight: 600;
 }
 
 @keyframes shake {

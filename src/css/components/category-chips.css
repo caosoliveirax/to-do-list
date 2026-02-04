@@ -3,14 +3,6 @@
     margin-bottom: var(--spacing-md);
 }
 
-.section-label {
-    display: block;
-    font-size: var(--font-size-sm);
-    color: var(--color-text-placeholder);
-    margin-bottom: var(--spacing-sm);
-    font-weight: 500;
-}
-
 .category-grid {
     display: flex;
     gap: var(--spacing-sm);
@@ -18,11 +10,8 @@
     padding: 5px 0;
     scrollbar-width: none;
 }
-.category-grid::-webkit-scrollbar { display: none; }
 
-.cat-item input[type="radio"] {
-    display: none;
-}
+.category-grid::-webkit-scrollbar { display: none; }
 
 .cat-card {
     display: flex;
@@ -31,7 +20,7 @@
     justify-content: center;
     min-width: 80px;
     padding: 10px;
-    border: 2px solid var(--color-border);
+    border: 1px solid var(--color-border);
     border-radius: 8px;
     background: var(--color-bg);
     cursor: pointer;
@@ -45,11 +34,6 @@
     height: 24px;
     margin-bottom: 4px;
     color: currentColor;
-}
-
-.cat-card span {
-    font-size: 0.75rem;
-    font-weight: 600;
 }
 
 /* --- ESTADOS ATIVOS (QUANDO SELECIONADO) --- */
@@ -91,7 +75,6 @@
 
 .cat-item input:checked + .cat-card {
   opacity: 1;
-  border-width: 2px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
   transform: translateY(-2px);
 }

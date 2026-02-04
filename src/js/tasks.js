@@ -1,23 +1,16 @@
 export function getTaskData() {
     const inputTask = document.getElementById('task-title');
     const inputDateTime = document.getElementById('task-datetime');
-    const selectPriority = document.getElementById('priority');
+    const selectedPriorityInput = document.querySelector('input[name="priority"]:checked');
     const selectedCategoryInput = document.querySelector('input[name="category"]:checked');
 
+    const category = selectedCategoryInput ? selectedCategoryInput.dataset.label : 'Geral';
     const title = inputTask.value;
     const dateTime = inputDateTime.value;
 
-
-
-    let category = 'Geral';
-    if (selectedCategoryInput) {
-      const label = selectedCategoryInput.nextElementSibling;
-      category = label.querySelector('span').textContent;
-    }
-
-    const priorityValue = selectPriority.value;
+    const priorityValue = selectedPriorityInput.value;
     const priorityLabel =
-        selectPriority.options[selectPriority.selectedIndex].text;
+        selectedPriorityInput.dataset.label;
 
     if (title.length > 0) {
         return {
