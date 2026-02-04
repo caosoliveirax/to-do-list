@@ -1,12 +1,20 @@
 export function getTaskData() {
     const inputTask = document.getElementById('task-title');
     const inputDateTime = document.getElementById('task-datetime');
-    const selectCategory = document.getElementById('category');
     const selectPriority = document.getElementById('priority');
+    const selectedCategoryInput = document.querySelector('input[name="category"]:checked');
 
     const title = inputTask.value;
     const dateTime = inputDateTime.value;
-    const category = selectCategory.options[selectCategory.selectedIndex].text;
+
+
+
+    let category = 'Geral';
+    if (selectedCategoryInput) {
+      const label = selectedCategoryInput.nextElementSibling;
+      category = label.querySelector('span').textContent;
+    }
+
     const priorityValue = selectPriority.value;
     const priorityLabel =
         selectPriority.options[selectPriority.selectedIndex].text;

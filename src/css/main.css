@@ -11,5 +11,6 @@
 @import url('./components/forms.css');
 @import url('./components/buttons.css');
 @import url('./components/datepicker.css');
+@import url('./components/category-chips.css');
 
 @import url('./style.css');

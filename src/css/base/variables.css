@@ -9,18 +9,19 @@
     --color-text-main: #333333;
     --color-text-light: #555555;
     --color-text-placeholder: #888888;
+    --color-text-secondary: #ffffff;
     --color-border: #cccccc;
     --color-bg: #ffffff;
     --color-bg-secondary: #f0f0f0;
 
     /* Category */
-    --color-cat-personal: #FF6B6B;
-    --color-cat-work: #4ECDC4;
-    --color-cat-study: #FFE66D;
-    --color-cat-health: #95E1D3;
-    --color-cat-shopping: #F7D794;
-    --color-cat-home: #778BEB;
-    --color-cat-entertainment: #F8A5C2;
+    --color-cat-personal: #1ABC9C;
+    --color-cat-work: #2612c0;
+    --color-cat-study: #a40b5b;
+    --color-cat-health: #89d857;
+    --color-cat-shopping: #2b4326;
+    --color-cat-home: #fcb644;
+    --color-cat-entertainment: #a20b0b;
 
     /* Typography */
     --font-family-base: 'Lato', sans-serif;
