@@ -44,6 +44,15 @@ localTasks.forEach((task) => {
 
 toggleEmptyState();
 
+document.addEventListener('click', (e) => {
+    const isDropdown = e.target.closest('.task-menu');
+    if (!isDropdown) {
+        document.querySelectorAll('.task-menu-dropdown').forEach((el) => {
+            el.classList.add('hidden');
+        });
+    }
+});
+
 taskInputName.addEventListener('focus', () => {
       inputWrapper.classList.remove('has-error');
 });
@@ -73,6 +82,19 @@ taskForm.addEventListener('submit', (e) => {
 
 taskList.addEventListener('click', (e) => {
     const targetElement = e.target;
+
+    const menuTrigger = targetElement.closest('.btn-action-trigger');
+    if (menuTrigger) {
+        const dropdown = menuTrigger.nextElementSibling;
+        document.querySelectorAll('.task-menu-dropdown').forEach((el) => {
+            if (el !== dropdown) {
+                el.classList.add('hidden');
+            }
+        });
+        dropdown.classList.toggle('hidden');
+        return;
+    }
+
     const taskItem = targetElement.closest('.task-item');
 
     if (!taskItem) return;

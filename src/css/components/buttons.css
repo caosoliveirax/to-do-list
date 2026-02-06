@@ -1,0 +1,108 @@
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    height: 48px;
+    padding: 0 var(--spacing-lg);
+    border-radius: var(--border-radius-md);
+    font-family: var(--font-family-base);
+    font-weight: 700;
+    font-size: var(--font-size-base);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    width: 100%;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.btn svg {
+  width: 24px;
+  height: 24px;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-text-secondary);
+  border: none;
+  margin-top: var(--spacing-sm);
+}
+
+.btn-primary:hover {
+  background-color: #cf6119;
+  transform: translateY(-2px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+  background-color: #b85616;
+}
+
+.task-menu {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+}
+
+.btn-action-trigger {
+    background: transparent;
+    border: none;
+    color: var(--color-text-placeholder);
+    cursor: pointer;
+    padding: var(--spacing-xs);
+    border-radius: var(--border-radius-sm);
+    display: flex;
+    align-items: center;
+    transition: background var(--transition-fast);
+}
+
+.btn-action-trigger svg {
+    width: 24px;
+    height: 24px;
+}
+
+.task-menu-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    min-width: 120px;
+    padding: var(--spacing-xs) 0;
+}
+
+.task-menu-dropdown.hidden {
+    display: none;
+}
+
+.remove-button {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: none;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    color: var(--color-overdue);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background var(--transition-fast);
+}
+
+.remove-button img {
+    width: 18px;
+    height: 18px;
+}
+
+.task-menu-dropdown .remove-button span {
+  font-weight: 400;
+  margin: 0;
+  font-size: var(--font-size-sm);
+}

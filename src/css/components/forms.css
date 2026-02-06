@@ -20,7 +20,7 @@ input {
 
 input:focus::placeholder {
     color: transparent;
-  }
+}
 
 input:focus {
     outline: none;
@@ -83,6 +83,10 @@ input:focus {
     border-color: var(--color-overdue);
     visibility: visible;
     opacity: 1;
+}
+
+.has-error input::placeholder {
+    color: transparent;
 }
 
 .input-wrapper p {

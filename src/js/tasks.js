@@ -118,14 +118,32 @@ export function createTaskItem(task) {
     taskCheckbox.classList.add('task-checkbox');
     taskItem.appendChild(taskCheckbox);
 
+    const menuContainer = document.createElement('div');
+    menuContainer.classList.add('task-menu');
+
+    const menuTrigger = document.createElement('button');
+    menuTrigger.type = 'button';
+    menuTrigger.classList.add('btn-action-trigger');
+    menuTrigger.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M112,60a16,16,0,1,1,16,16A16,16,0,0,1,112,60Zm16,52a16,16,0,1,0,16,16A16,16,0,0,0,128,112Zm0,68a16,16,0,1,0,16,16A16,16,0,0,0,128,180Z"/></svg>
+    `
+
+    const menuDropdown = document.createElement('div');
+    menuDropdown.classList.add('task-menu-dropdown', 'hidden');
+
     const removeBtn = document.createElement('button');
     removeBtn.type = 'button';
     removeBtn.classList.add('remove-button');
-    taskItem.appendChild(removeBtn);
-    const removeIcon = document.createElement('img');
-    removeIcon.src = './src/assets/remove.svg';
-    removeIcon.alt = 'Remover tarefa';
-    removeBtn.appendChild(removeIcon);
+    removeBtn.alt = 'Excluir tarefa';
+    removeBtn.innerHTML = `
+    <img src="./src/assets/trash.svg" alt="">
+    <span>Excluir</span>
+`;
+
+    menuDropdown.appendChild(removeBtn);
+    menuContainer.appendChild(menuTrigger);
+    menuContainer.appendChild(menuDropdown);
+    taskItem.appendChild(menuContainer);
 
     if (task.completed) {
         taskItem.classList.add('completed');

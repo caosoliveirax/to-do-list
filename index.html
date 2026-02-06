@@ -31,7 +31,7 @@
     <section>
       <form id="task-form">
         <div class="input-wrapper">
-          <input id="task-title" type="text" placeholder="Exemplo: Estudar JavaScript">
+          <input id="task-title" type="text" placeholder="Ex: Estudar JavaScript">
           <p>Por favor, preencha o nome da tarefa</p>
           <label for="task-title">Nome da tarefa</label>
         </div>
@@ -193,7 +193,13 @@
             </div>
           </div>
         </div>
-        <button id="btn-add" type="submit">Adicionar tarefa</button>
+        <button class="btn btn-primary" id="btn-add" type="submit">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor">
+            <path
+              d="M228,128a12,12,0,0,1-12,12H140v76a12,12,0,0,1-24,0V140H40a12,12,0,0,1,0-24h76V40a12,12,0,0,1,24,0v76h76A12,12,0,0,1,228,128Z" />
+          </svg>
+          Adicionar tarefa
+        </button>
       </form>
     </section>
   </main>
