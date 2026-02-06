@@ -8,27 +8,26 @@
   <link rel="stylesheet" href="./src/css/main.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap"
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet">
 </head>
 
 <body>
   <header class="header-todo">
     <h1 class="title">Slice Of Lice</h1>
+    <h2 class="sub-titles">Meu Dia
+      <br>
+      <time id="today"></time>
+    </h2>
   </header>
   <main class="container">
-    <section>
-      <h2 class="sub-titles">Meu Dia
-        <br>
-        <span id="today"></span>
-      </h2>
+    <section class="todo-container" aria-label="Lista de tarefas">
       <ul id="todo-list"></ul>
       <div id="empty-state" class="empty-state">
         <p>Sua lista está vazia. Que tal adicionar uma tarefa?</p>
       </div>
     </section>
-    <section>
+    <section class="form-container" aria-label="Formulário de nova tarefa">
       <form id="task-form">
         <div class="input-wrapper">
           <input id="task-title" type="text" placeholder="Ex: Estudar JavaScript">
@@ -41,8 +40,8 @@
           <label for="task-datetime">Data e Hora</label>
         </div>
         <div class="options-wrapper">
-          <div class="category-wrapper">
-            <label class="section-label">Categoria</label>
+          <fieldset class="category-wrapper">
+            <legend class="section-label">Categoria</legend>
             <div class="category-grid">
               <div class="cat-item">
                 <input type="radio" name="category" id="cat-personal" value="personal" data-label="Pessoal" checked>
@@ -121,10 +120,10 @@
                 </label>
               </div>
             </div>
-          </div>
+          </fieldset>
 
-          <div class="priority-wrapper">
-            <label class="section-label">Prioridade</label>
+          <fieldset class="priority-wrapper">
+            <legend class="section-label">Prioridade</legend>
             <div class="priority-grid">
               <div class="prio-item">
                 <input type="radio" name="priority" id="prio-none" value="none" data-label="Nenhuma" checked>
@@ -191,7 +190,7 @@
                 </label>
               </div>
             </div>
-          </div>
+          </fieldset>
         </div>
         <button class="btn btn-primary" id="btn-add" type="submit">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor">
