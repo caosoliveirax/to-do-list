@@ -5,20 +5,15 @@ export function getTasksFromStorage() {
 
 export function addTaskToStorage(task) {
     let tasks = JSON.parse(localStorage.getItem('myTasks')) || [];
-    const existingTask = tasks.find((t) => t.title === task.title);
 
-    if (!existingTask) {
-        tasks.push(task);
-        localStorage.setItem('myTasks', JSON.stringify(tasks));
-        return true;
-    } else {
-        return false;
-    }
+    tasks.push(task);
+    localStorage.setItem('myTasks', JSON.stringify(tasks));
+    return true;
 }
 
-export function removeTaskFromStorage(title) {
+export function removeTaskFromStorage(id) {
     let tasks = JSON.parse(localStorage.getItem('myTasks')) || [];
-    tasks = tasks.filter((task) => task.title !== title);
+    tasks = tasks.filter((task) => task.id !== Number(id));
     localStorage.setItem('myTasks', JSON.stringify(tasks));
 }
 

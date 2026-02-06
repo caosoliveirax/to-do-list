@@ -4,9 +4,10 @@ export function getTaskData() {
     const selectedPriorityInput = document.querySelector('input[name="priority"]:checked');
     const selectedCategoryInput = document.querySelector('input[name="category"]:checked');
 
-    const category = selectedCategoryInput ? selectedCategoryInput.dataset.label : 'Geral';
     const title = inputTask.value;
     const dateTime = inputDateTime.value;
+    const category = selectedCategoryInput ? selectedCategoryInput.dataset.label : 'Geral';
+    const categoryValue = selectedCategoryInput ? selectedCategoryInput.value : 'general';
 
     const priorityValue = selectedPriorityInput.value;
     const priorityLabel =
@@ -14,9 +15,11 @@ export function getTaskData() {
 
     if (title.length > 0) {
         return {
+            id: Date.now(),
             title,
             dateTime,
             category,
+            categoryValue,
             priorityValue,
             priorityLabel,
             completed: false,
@@ -51,9 +54,31 @@ export function getCountdownText(deadline) {
     return { text, isOverdue: false };
 }
 
+/**
+ * Cria o elemento HTML (item de lista) para representar uma tarefa no DOM.
+ * Esta função é responsável por construir toda a estrutura visual de uma tarefa,
+ * incluindo os badges de categoria, título, data formatada, contador regressivo,
+ * ícone de prioridade, checkbox de conclusão e o menu de ações (context menu).
+    * @param {Object} task - O objeto contendo todos os dados da tarefa.
+ * @param {number} task.id - O identificador único (Timestamp).
+ * @param {string} task.title - O texto descritivo da tarefa.
+ * @param {string} task.dateTime - A string de data/hora no formato ISO ou formatada.
+ * @param {string} task.categoryValue - O valor técnico da categoria (ex: "work").
+ * @param {string} task.category - O rótulo da categoria (ex: "Trabalho").
+ * @param {string} task.priorityValue - O valor técnico da prioridade (ex: "high").
+ * @param {string} task.priorityLabel - O texto amigável da prioridade (ex: "Alta").
+ * @param {boolean} task.completed - O estado atual de conclusão da tarefa.
+    * @returns {HTMLLIElement} O elemento <li> pronto para ser inserido na <ul> da lista.
+ */
 export function createTaskItem(task) {
     const taskItem = document.createElement('li');
     taskItem.classList.add('task-item');
+
+    if (task.categoryValue) {
+      taskItem.classList.add(`category-${task.categoryValue}`);
+    }
+
+    taskItem.dataset.id = task.id;
 
     const taskCategory = document.createElement('span');
     taskItem.appendChild(taskCategory);

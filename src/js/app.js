@@ -32,6 +32,7 @@ if (dateElement) {
         dateString.charAt(0).toUpperCase() + dateString.slice(1);
 
     dateElement.textContent = formattedDate;
+    dateElement.setAttribute('datetime', now.toISOString().split('T')[0]);
 }
 
 const localTasks = getTasksFromStorage();
@@ -82,6 +83,11 @@ taskForm.addEventListener('submit', (e) => {
 
 taskList.addEventListener('click', (e) => {
     const targetElement = e.target;
+    const taskItem = targetElement.closest('.task-item');
+    const taskId = taskItem.dataset.id;
+
+    if (!taskItem) return;
+
 
     const menuTrigger = targetElement.closest('.btn-action-trigger');
     if (menuTrigger) {
@@ -95,24 +101,20 @@ taskList.addEventListener('click', (e) => {
         return;
     }
 
-    const taskItem = targetElement.closest('.task-item');
-
-    if (!taskItem) return;
 
     if (targetElement.classList.contains('task-checkbox')) {
         taskItem.classList.toggle('completed');
-
-        const taskTitle = taskItem.querySelector('p').textContent;
-        toggleTaskCompletionInStorage(taskTitle);
+        toggleTaskCompletionInStorage(taskId);
+        return;
     }
 
-    const removeBtn = targetElement.closest('.remove-button');
 
+    const removeBtn = targetElement.closest('.remove-button');
     if (removeBtn) {
-        const taskTitle = taskItem.querySelector('p').textContent;
-        removeTaskFromStorage(taskTitle);
+        removeTaskFromStorage(taskId);
         taskItem.remove();
         toggleEmptyState();
+        return;
     }
 });
 
