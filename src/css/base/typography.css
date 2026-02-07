@@ -6,21 +6,25 @@ body {
 }
 
 .title {
-    font-size: var(--font-size-xl);
-    font-style: italic;
+    font-size: var(--font-size-2xl);
     font-weight: 800;
-    color: var(--color-primary);
+    color: var(--color-text-secondary);
 }
 
-.sub-titles {
-    font-size: var(--font-size-lg);
-    margin: 0 0 1rem 0;
+.sub-title {
+    font-size: var(--font-size-base);
+    font-weight: 600;
     text-align: center;
-    color: var(--color-primary);
+    color: var(--color-text-secondary);
+}
+
+.section-title {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    margin: 0 0 28px 0;
+    color: var(--color-text-main);
 }
 
 label {
-    font-size: var(--font-size-sm);
-
+  font-size: var(--font-size-sm);
 }
-
