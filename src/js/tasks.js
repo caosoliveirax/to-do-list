@@ -6,8 +6,8 @@ export function getTaskData() {
 
     const title = inputTask.value;
     const dateTime = inputDateTime.value;
-    const category = selectedCategoryInput ? selectedCategoryInput.dataset.label : 'Geral';
-    const categoryValue = selectedCategoryInput ? selectedCategoryInput.value : 'general';
+    const category = selectedCategoryInput ? selectedCategoryInput.dataset.label : 'Pessoal';
+    const categoryValue = selectedCategoryInput ? selectedCategoryInput.value : 'personal';
 
     const priorityValue = selectedPriorityInput.value;
     const priorityLabel =
@@ -27,6 +27,13 @@ export function getTaskData() {
     }
 }
 
+/**
+ * Calcula o tempo restante até o prazo final (deadline) e retorna o texto formatado.
+ *    @param {string} deadline - A data e hora do prazo (no formato aceito pelo construtor Date).
+ * @returns {Object|null} Objeto com a contagem ou null caso o prazo seja inválido.
+ * @property {string} text - O texto formatado para exibição (ex: "Restam: 1d 5h 30m").
+ * @property {boolean} isOverdue - Define se a tarefa está atrasada (prazo expirado).
+ */
 export function getCountdownText(deadline) {
     if (!deadline) return null;
 
@@ -80,11 +87,54 @@ export function createTaskItem(task) {
 
     taskItem.dataset.id = task.id;
 
-    const taskCategory = document.createElement('span');
-    taskItem.appendChild(taskCategory);
-    taskCategory.textContent = task.category;
+    const taskHeader = document.createElement('div');
+    taskHeader.classList.add('task-header');
+    taskItem.appendChild(taskHeader);
+
+    const categoryIcons = {
+      personal: './src/assets/personal.svg',
+      entertainment: './src/assets/entertainment.svg',
+      home: './src/assets/home.svg',
+      health: './src/assets/health.svg',
+      shopping: './src/assets/shopping.svg',
+      work: './src/assets/work.svg',
+      study: './src/assets/study.svg'
+    };
+
+    const taskCategory = document.createElement('img');
+    taskHeader.appendChild(taskCategory);
+    taskCategory.classList.add('category-icon');
+    taskCategory.src = categoryIcons[task.categoryValue];
+
+    const menuContainer = document.createElement('div');
+    menuContainer.classList.add('task-menu');
+
+    const menuTrigger = document.createElement('button');
+    menuTrigger.type = 'button';
+    menuTrigger.classList.add('btn-action-trigger');
+    menuTrigger.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M112,60a16,16,0,1,1,16,16A16,16,0,0,1,112,60Zm16,52a16,16,0,1,0,16,16A16,16,0,0,0,128,112Zm0,68a16,16,0,1,0,16,16A16,16,0,0,0,128,180Z"/></svg>
+    `
+
+    const menuDropdown = document.createElement('div');
+    menuDropdown.classList.add('task-menu-dropdown', 'hidden');
+
+    const removeBtn = document.createElement('button');
+    removeBtn.type = 'button';
+    removeBtn.classList.add('remove-button');
+    removeBtn.alt = 'Excluir tarefa';
+    removeBtn.innerHTML = `
+    <img src="./src/assets/trash.svg" alt="">
+    <span>Excluir</span>
+`;
+
+    menuDropdown.appendChild(removeBtn);
+    menuContainer.appendChild(menuTrigger);
+    menuContainer.appendChild(menuDropdown);
+    taskHeader.appendChild(menuContainer);
 
     const taskTitle = document.createElement('p');
+    taskTitle.classList.add('task-title');
     taskItem.appendChild(taskTitle);
     taskTitle.textContent = task.title;
 
@@ -124,51 +174,37 @@ export function createTaskItem(task) {
         taskDateTime.textContent = '';
     }
 
-    const priorityIcons = {
-        none: './src/assets/none.svg',
-        low: './src/assets/low.svg',
-        medium: './src/assets/medium.svg',
-        high: './src/assets/high.svg',
-    };
+    const footerTask = document.createElement('div');
+    footerTask.classList.add('task-footer');
+    taskItem.appendChild(footerTask);
 
-    const taskPriority = document.createElement('img');
-    taskPriority.classList.add('priority-icon');
-    taskPriority.src = priorityIcons[task.priorityValue];
-    taskPriority.alt = task.priorityLabel;
-    taskItem.appendChild(taskPriority);
+    const priorityContainer = document.createElement('div');
+    priorityContainer.classList.add('priority-container');
+    priorityContainer.setAttribute('aria-label', `Prioridade: ${task.priorityLabel}`)
+
+    const starsCount = {
+        none: 0,
+        low: 1,
+        medium: 2,
+        high: 3,
+      };
+
+      const count = starsCount[task.priorityValue] || 0;
+
+    for (let i = 0; i < count; i++) {
+      const starIcon = document.createElement('span');
+      starIcon.classList.add('star-icon');
+      starIcon.setAttribute('aria-hidden', 'true');
+      priorityContainer.appendChild(starIcon);
+    }
+
+    footerTask.appendChild(priorityContainer);
 
     const taskCheckbox = document.createElement('input');
     taskCheckbox.type = 'checkbox';
     taskCheckbox.name = 'task-checkbox';
     taskCheckbox.classList.add('task-checkbox');
-    taskItem.appendChild(taskCheckbox);
-
-    const menuContainer = document.createElement('div');
-    menuContainer.classList.add('task-menu');
-
-    const menuTrigger = document.createElement('button');
-    menuTrigger.type = 'button';
-    menuTrigger.classList.add('btn-action-trigger');
-    menuTrigger.innerHTML = `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M112,60a16,16,0,1,1,16,16A16,16,0,0,1,112,60Zm16,52a16,16,0,1,0,16,16A16,16,0,0,0,128,112Zm0,68a16,16,0,1,0,16,16A16,16,0,0,0,128,180Z"/></svg>
-    `
-
-    const menuDropdown = document.createElement('div');
-    menuDropdown.classList.add('task-menu-dropdown', 'hidden');
-
-    const removeBtn = document.createElement('button');
-    removeBtn.type = 'button';
-    removeBtn.classList.add('remove-button');
-    removeBtn.alt = 'Excluir tarefa';
-    removeBtn.innerHTML = `
-    <img src="./src/assets/trash.svg" alt="">
-    <span>Excluir</span>
-`;
-
-    menuDropdown.appendChild(removeBtn);
-    menuContainer.appendChild(menuTrigger);
-    menuContainer.appendChild(menuDropdown);
-    taskItem.appendChild(menuContainer);
+    footerTask.appendChild(taskCheckbox);
 
     if (task.completed) {
         taskItem.classList.add('completed');

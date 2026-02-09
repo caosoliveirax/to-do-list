@@ -1,0 +1,144 @@
+.task-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: var(--color-bg-light);
+    border-radius: var(--border-radius-xl);
+    border: 1px solid var(--color-border-light);
+}
+
+.task-item.category-personal { box-shadow: -1px 1px 3px var(--color-cat-personal); }
+.task-item.category-work { box-shadow: -1px 1px 3px var(--color-cat-work); }
+.task-item.category-home { box-shadow: -1px 1px 3px var(--color-cat-home); }
+.task-item.category-health { box-shadow: -1px 1px 3px var(--color-cat-health); }
+.task-item.category-entertainment { box-shadow: -1px 1px 3px var(--color-cat-entertainment); }
+.task-item.category-shopping { box-shadow: -1px 1px 3px var(--color-cat-shopping); }
+.task-item.category-study { box-shadow: -1px 1px 3px var(--color-cat-study); }
+
+.task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.category-icon {
+    width: 40px;
+    height: 40px;
+    padding: 8px;
+    border-radius: var(--border-radius-lg);
+}
+
+.task-item.completed .category-icon {
+    filter: grayscale(100%);
+    opacity: 0.5;
+}
+
+.task-item.category-personal .category-icon { background-color: var(--color-cat-personal-light); }
+.task-item.category-entertainment .category-icon { background-color: var(--color-cat-entertainment-light); }
+.task-item.category-home .category-icon { background-color: var(--color-cat-home-light); }
+.task-item.category-health .category-icon { background-color: var(--color-cat-health-light); }
+.task-item.category-shopping .category-icon { background-color: var(--color-cat-shopping-light); }
+.task-item.category-work .category-icon { background-color: var(--color-cat-work-light); }
+.task-item.category-study .category-icon { background-color: var(--color-cat-study-light);}
+
+.task-title {
+    font-size: var(--font-size-md);
+    font-weight: 700;
+    margin-top: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
+}
+
+.task-item span {
+    margin-bottom: 0.75rem;
+}
+
+.task-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.priority-container {
+    display: flex;
+    align-items: center;
+}
+
+.priority-container span {
+  margin: 0;
+}
+
+.star-icon {
+    width: 18px;
+    height: 18px;
+    background-color: var(--task-color);
+    -webkit-mask: url('../../src/assets/star.svg') no-repeat center / contain;
+    mask: url('../../assets/star.svg') no-repeat center / contain;
+    transition: background-color var(--transition-fast);
+}
+
+.task-item.category-personal { --task-color: var(--color-cat-personal); }
+.task-item.category-work { --task-color: var(--color-cat-work); }
+.task-item.category-health { --task-color: var(--color-cat-health); }
+.task-item.category-home { --task-color: var(--color-cat-home); }
+.task-item.category-entertainment { --task-color: var(--color-cat-entertainment); }
+.task-item.category-shopping { --task-color: var(--color-cat-shopping); }
+.task-item.category-study { --task-color: var(--color-cat-study); }
+
+.task-item.completed .star-icon {
+    filter: grayscale(100%);
+    opacity: 0.5;
+}
+
+.task-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    box-sizing: content-box;
+
+    width: 28px;
+    height: 28px;
+    margin: 0;
+    border: 1px solid var(--color-border);
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.task-checkbox:checked {
+    background-color: #333;
+    border-color: #333;
+}
+
+.task-checkbox::after {
+    content: '';
+    width: 6px;
+    height: 12px;
+    border-width: 0px 2px 2px 0;
+    transform: rotate(45deg);
+    margin-bottom: 2px;
+}
+
+.completed {
+    text-decoration: line-through;
+    opacity: 0.5;
+    background-color: var(--color-primary);
+}
+
+
+.task-countdown {
+    font-size: 0.85rem;
+    color: var(--color-text-light);
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.task-item.overdue {
+    border-color: var(--color-overdue);
+}
+
+.task-item.overdue .task-countdown {
+    color: var(--color-overdue);
+    font-weight: bold;
+}

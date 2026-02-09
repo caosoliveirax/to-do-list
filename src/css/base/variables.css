@@ -18,12 +18,19 @@
 
     /* Category */
     --color-cat-personal: #1ABC9C;
-    --color-cat-work: #2612c0;
-    --color-cat-study: #a40b5b;
-    --color-cat-health: #89d857;
-    --color-cat-shopping: #2b4326;
-    --color-cat-home: #fcb644;
+    --color-cat-personal-light: rgba(26, 188, 156, 0.1);
     --color-cat-entertainment: #a20b0b;
+    --color-cat-entertainment-light: rgba(162, 11, 11, 0.1);
+    --color-cat-home: #fcb644;
+    --color-cat-home-light: rgba(252, 182, 68, 0.1);
+    --color-cat-health: #89d857;
+    --color-cat-health-light: rgba(137, 216, 87, 0.1);
+    --color-cat-shopping: #2b4326;
+    --color-cat-shopping-light: rgba(43, 67, 38, 0.1);
+    --color-cat-work: #2612c0;
+    --color-cat-work-light: rgba(38, 18, 192, 0.1);
+    --color-cat-study: #a40b5b;
+    --color-cat-study-light: rgba(164, 11, 91, 0.1);
 
     /* Priority */
     --color-prio-none: #9e9e9e;
