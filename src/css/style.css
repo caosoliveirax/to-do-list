@@ -1,16 +1,15 @@
-
 .empty-state {
-    text-align: center;
-    margin: 2rem 0 3rem 0;
-    color: var(--color-text-placeholder);
+  text-align: center;
+  margin: 2rem 0 3rem 0;
+  color: var(--color-text-placeholder);
 }
 
 .empty-state img {
-    width: 60px;
-    opacity: 0.5;
-    margin-bottom: 1rem;
+  width: 60px;
+  opacity: 0.5;
+  margin-bottom: 1rem;
 }
 
 .hidden {
-    display: none;
+  display: none;
 }
