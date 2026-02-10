@@ -1,12 +1,7 @@
 .priority-grid {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
   gap: var(--spacing-sm);
-  padding: 5px 0;
-}
-
-.prio-item {
-  width: 100%;
 }
 
 .prio-card {
@@ -16,10 +11,10 @@
   justify-content: center;
   gap: 0.5rem;
   padding: 1rem;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-border-main);
   border-radius: 8px;
   cursor: pointer;
-  background-color: var(--color-bg);
+  background-color: var(--color-bg-main);
   transition: all 0.2s ease;
   height: 100%;
   opacity: 0.7;
@@ -31,10 +26,10 @@
 }
 
 .prio-card svg {
-    width: 28px;
-    height: 28px;
-    margin-bottom: 4px;
-    color: currentColor;
+  width: 20px;
+  height: 20px;
+  margin-bottom: 4px;
+  color: currentColor;
 }
 
 /* --- ESTADOS ATIVOS (QUANDO SELECIONADO) --- */
@@ -60,9 +55,9 @@
 }
 
 .prio-item input:checked + .prio-card {
-    opacity: 1;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-    transform: translateY(-2px);
+  opacity: 1;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
 }
 
 .prio-item input:checked + .prio-card.none {
@@ -84,4 +79,3 @@
   background-color: var(--color-prio-high);
   color: var(--color-text-secondary);
 }
-
