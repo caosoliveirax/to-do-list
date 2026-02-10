@@ -1,31 +1,31 @@
 export function getTasksFromStorage() {
-    const tasks = JSON.parse(localStorage.getItem('myTasks'));
-    return tasks ? tasks : [];
+  const tasks = JSON.parse(localStorage.getItem('myTasks'));
+  return tasks ? tasks : [];
 }
 
 export function addTaskToStorage(task) {
-    let tasks = JSON.parse(localStorage.getItem('myTasks')) || [];
+  let tasks = JSON.parse(localStorage.getItem('myTasks')) || [];
 
-    tasks.push(task);
-    localStorage.setItem('myTasks', JSON.stringify(tasks));
-    return true;
+  tasks.push(task);
+  localStorage.setItem('myTasks', JSON.stringify(tasks));
+  return true;
 }
 
 export function removeTaskFromStorage(id) {
-    let tasks = JSON.parse(localStorage.getItem('myTasks')) || [];
-    tasks = tasks.filter((task) => task.id !== Number(id));
-    localStorage.setItem('myTasks', JSON.stringify(tasks));
+  let tasks = JSON.parse(localStorage.getItem('myTasks')) || [];
+  tasks = tasks.filter((task) => task.id !== Number(id));
+  localStorage.setItem('myTasks', JSON.stringify(tasks));
 }
 
-export function toggleTaskCompletionInStorage(title) {
-    let tasks = JSON.parse(localStorage.getItem('myTasks')) || [];
+export function toggleTaskCompletionInStorage(id) {
+  let tasks = JSON.parse(localStorage.getItem('myTasks')) || [];
 
-    tasks = tasks.map((task) => {
-        if (task.title === title) {
-            return { ...task, completed: !task.completed };
-        }
-        return task;
-    });
+  tasks = tasks.map((task) => {
+    if (task.id === Number(id)) {
+      return { ...task, completed: !task.completed };
+    }
+    return task;
+  });
 
-    localStorage.setItem('myTasks', JSON.stringify(tasks));
+  localStorage.setItem('myTasks', JSON.stringify(tasks));
 }
