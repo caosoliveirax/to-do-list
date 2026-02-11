@@ -1,8 +1,52 @@
+.form-content {
+  background-color: var(--color-bg-card);
+  padding: 0 var(--spacing-lg) var(--spacing-xl) var(--spacing-lg);
+  border-radius: 32px 32px 0 0;
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.1);
+
+  max-height: 92vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+
+  transform: translateY(100%);
+  transition: transform var(--transition-normal);
+}
+
+.header-form {
+  position: sticky;
+  top: 0;
+  margin: 0 calc(var(--spacing-lg) * -1);
+  padding: var(--spacing-lg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border-light);
+  z-index: 10;
+}
+
+.drawer-handle {
+  position: absolute;
+  top: 12px;
+  right: 50%;
+  transform: translateX(50%);
+  width: 36px;
+  height: 4px;
+  background-color: var(--color-slate-300);
+  border-radius: var(--border-radius-full);
+  margin: 0 auto 24px auto;
+}
+
+.form-container.open .form-content {
+  transform: translateY(0);
+}
+
 #task-form {
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: var(--spacing-sm);
+  margin-top: var(--spacing-lg);
 }
 
 input {
@@ -12,7 +56,7 @@ input {
   margin: 0.5rem 0;
   border: var(--border-width) solid var(--color-border-main);
   border-radius: var(--border-radius-md);
-  background-color: var(--color-bg-main);
+  background-color: var(--color-bg-card);
   color: var(--color-text-main);
   font-family: var(--font-family-base);
   font-size: clamp(var(--font-size-sm), 3vw, var(--font-size-base));
@@ -70,7 +114,7 @@ input:focus {
   border: var(--border-width) solid var(--color-border-main);
   border-radius: 8px;
   padding: 0 var(--spacing-xs);
-  z-index: 10;
+  z-index: 1;
 }
 
 .options-wrapper {
