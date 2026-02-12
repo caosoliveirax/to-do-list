@@ -38,18 +38,18 @@
         </div>
         <form id="task-form">
           <div class="input-wrapper">
+            <label for="task-title">Nome da tarefa</label>
             <input id="task-title" type="text" placeholder="Ex: Estudar JavaScript">
             <p>Por favor, preencha o nome da tarefa</p>
-            <label for="task-title">Nome da tarefa</label>
           </div>
           <div class="input-wrapper">
+            <label for="task-datetime">Data e Hora</label>
             <input name="task-datetime" id="task-datetime" type="text" class="input-date"
               placeholder="Selecione o dia e a hora">
-            <label for="task-datetime">Data e Hora</label>
           </div>
           <div class="options-wrapper">
             <fieldset class="category-wrapper">
-              <legend class="section-label">Categoria</legend>
+              <legend>Categoria</legend>
               <div class="category-grid">
                 <div class="cat-item">
                   <input type="radio" name="category" id="cat-personal" value="personal" data-label="Pessoal" checked>
@@ -131,7 +131,7 @@
             </fieldset>
 
             <fieldset class="priority-wrapper">
-              <legend class="section-label">Prioridade</legend>
+              <legend>Prioridade</legend>
               <div class="priority-grid">
                 <div class="prio-item">
                   <input type="radio" name="priority" id="prio-none" value="none" data-label="Nenhuma" checked>
