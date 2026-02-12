@@ -10,8 +10,13 @@
   font-weight: 700;
   font-size: var(--font-size-base);
   cursor: pointer;
-  transition: all var(--transition-fast);
   width: 100%;
+  margin-top: var(--spacing-sm);
+  transition: all var(--transition-fast);
+}
+
+.btn:active {
+  transform: translateY(2px);
 }
 
 .btn:focus-visible {
@@ -40,18 +45,26 @@
 .btn-add-task {
   background-color: var(--color-primary);
   color: var(--color-text-secondary);
-  border: none;
-  margin-top: var(--spacing-sm);
+  border: 1px solid var(--color-primary);
 }
 
-.btn-add-task:hover {
-  background-color: #cf6119;
-  transform: translateY(-2px);
+.btn-reset-task {
+  background-color: var(--color-text-secondary);
+  color: var(--color-text-main);
+  border: 1px solid var(--color-border-main);
 }
 
-.btn-add-task:active {
-  transform: translateY(0);
-  background-color: #b85616;
+.is-spinning svg {
+  animation: spin-once 0.5s ease-in-out;
+}
+
+@keyframes spin-once {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
 }
 
 .task-menu {

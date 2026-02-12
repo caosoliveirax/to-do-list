@@ -8,24 +8,28 @@ export function getTaskData() {
     'input[name="category"]:checked'
   );
 
-  const title = inputTask.value;
+  const title = inputTask.value.trim();
   const dateTime = inputDateTime.value;
-  const category = selectedCategoryInput
+  const categoryLabel = selectedCategoryInput
     ? selectedCategoryInput.dataset.label
     : 'Pessoal';
   const categoryValue = selectedCategoryInput
     ? selectedCategoryInput.value
     : 'personal';
 
-  const priorityValue = selectedPriorityInput.value;
-  const priorityLabel = selectedPriorityInput.dataset.label;
+  const priorityLabel = selectedPriorityInput
+    ? selectedPriorityInput.dataset.label
+    : 'Nenhuma';
+  const priorityValue = selectedPriorityInput
+    ? selectedPriorityInput.value
+    : 'none';
 
   if (title.length > 0) {
     return {
       id: Date.now(),
       title,
       dateTime,
-      category,
+      categoryLabel,
       categoryValue,
       priorityValue,
       priorityLabel,
@@ -76,7 +80,7 @@ export function getCountdownText(deadline) {
  * @param {string} task.title - O texto descritivo da tarefa.
  * @param {string} task.dateTime - A string de data/hora no formato ISO ou formatada.
  * @param {string} task.categoryValue - O valor técnico da categoria (ex: "work").
- * @param {string} task.category - O rótulo da categoria (ex: "Trabalho").
+ * @param {string} task.categoryLabel - O rótulo da categoria (ex: "Trabalho").
  * @param {string} task.priorityValue - O valor técnico da prioridade (ex: "high").
  * @param {string} task.priorityLabel - O texto amigável da prioridade (ex: "Alta").
  * @param {boolean} task.completed - O estado atual de conclusão da tarefa.

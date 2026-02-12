@@ -12,6 +12,7 @@ const containerForm = document.querySelector('.form-container');
 const taskForm = document.getElementById('task-form');
 const taskInputName = document.getElementById('task-title');
 const inputWrapper = document.querySelector('.input-wrapper');
+const resetTaskButton = document.getElementById('btn-reset');
 const taskList = document.getElementById('todo-list');
 const emptyStateMessage = document.getElementById('empty-state');
 
@@ -63,7 +64,6 @@ taskInputName.addEventListener('focus', () => {
 
 taskForm.addEventListener('submit', (e) => {
   e.preventDefault();
-
   const taskData = getTaskData();
 
   if (!taskData) {
@@ -72,15 +72,14 @@ taskForm.addEventListener('submit', (e) => {
   }
 
   const taskSaved = addTaskToStorage(taskData);
-
   if (taskSaved) {
     const taskElement = createTaskItem(taskData);
     const firstTask = taskList.firstChild;
     taskList.insertBefore(taskElement, firstTask);
-  } else {
-    alert('Esta tarefa já existe.');
+    taskForm.reset();
+    fp.clear();
+    containerForm.classList.remove('open');
   }
-
   toggleEmptyState();
 });
 
@@ -120,6 +119,7 @@ taskList.addEventListener('click', (e) => {
 
 openButtonSection.addEventListener('click', (e) => {
   e.preventDefault();
+  inputWrapper.classList.remove('has-error');
   containerForm.classList.toggle('open');
 });
 
@@ -165,7 +165,7 @@ function handleSwipe() {
   }
 }
 
-flatpickr('#task-datetime', {
+const fp = flatpickr('#task-datetime', {
   enableTime: true,
   dateFormat: 'Y-m-d H:i',
   altInput: true,
@@ -173,6 +173,18 @@ flatpickr('#task-datetime', {
   locale: 'pt',
   time_24hr: true,
   disableMobile: 'true',
+});
+
+resetTaskButton.addEventListener('click', () => {
+  inputWrapper.classList.remove('has-error');
+  resetTaskButton.classList.add('is-spinning');
+  taskForm.reset();
+  fp.clear();
+  setTimeout(() => {
+    resetTaskButton.classList.remove('is-spinning');
+  }, 500);
+
+  taskInputName.focus();
 });
 
 function updateAllCountdowns() {
