@@ -170,10 +170,49 @@
 }
 
 .task-item.overdue {
-  border-color: var(--color-overdue);
+  box-shadow: 0 0 4px var(--color-overdue);
+  background-color: var(--color-overdue-light);
+  animation: shake-with-pause 5s ease-in-out infinite;
+}
+
+@keyframes shake-with-pause {
+  0% {
+    transform: translateX(0);
+  }
+  2% {
+    transform: translateX(5px);
+  }
+  4% {
+    transform: translateX(5px);
+  }
+  6% {
+    transform: translateX(-5px);
+  }
+  8% {
+    transform: translateX(5px);
+  }
+  10% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.task-item.overdue .category-icon,
+.task-item.overdue .task-checkbox::after {
+  filter: grayscale(100%);
+}
+
+.task-item.overdue .btn-action-trigger svg {
+  color: var(--color-overdue);
+}
+
+.task-item.overdue .task-datetime {
+  color: var(--color-overdue);
 }
 
 .task-item.overdue .task-countdown {
   color: var(--color-overdue);
-  font-weight: bold;
+  font-weight: 800;
 }

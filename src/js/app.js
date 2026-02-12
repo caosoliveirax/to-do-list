@@ -104,6 +104,18 @@ taskList.addEventListener('click', (e) => {
 
   if (targetElement.classList.contains('task-checkbox')) {
     taskItem.classList.toggle('completed');
+
+    if (taskItem.classList.contains('completed')) {
+      taskItem.classList.remove('overdue');
+    } else {
+      const deadline = taskItem.dataset.deadline;
+      if (deadline) {
+        const countdownData = getCountdownText(deadline);
+        if (countdownData && countdownData.isOverdue) {
+          taskItem.classList.add('overdue');
+        }
+      }
+    }
     toggleTaskCompletionInStorage(taskId);
     return;
   }

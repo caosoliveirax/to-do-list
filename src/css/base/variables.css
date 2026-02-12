@@ -5,6 +5,7 @@
 
   /* --- Feedback --- */
   --color-overdue: #ef4444;
+  --color-overdue-light: rgba(239, 68, 68, 0.1);
 
   /* --- Text Colors --- */
   --color-text-main: #1e293b;
@@ -80,4 +81,5 @@
   --transition-fast: 0.2s ease-in-out;
   --transition-normal: 0.3s ease-in-out;
   --transition-slow: 0.5s ease-in-out;
+  --transition-cubic: 0.5s cubic-bezier(0, 0, 0.2, 1);
 }

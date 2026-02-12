@@ -221,6 +221,7 @@ export function createTaskItem(task) {
 
   if (task.completed) {
     taskItem.classList.add('completed');
+    taskItem.classList.remove('overdue');
     taskCheckbox.checked = true;
   }
   return taskItem;
