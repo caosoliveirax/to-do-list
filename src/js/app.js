@@ -177,6 +177,8 @@ function handleSwipe() {
   }
 }
 
+let backdropShield = null;
+
 const fp = flatpickr('#task-datetime', {
   enableTime: true,
   dateFormat: 'Y-m-d H:i',
@@ -185,6 +187,36 @@ const fp = flatpickr('#task-datetime', {
   locale: 'pt',
   time_24hr: true,
   disableMobile: 'true',
+
+  onOpen: function (selectedDates, dateStr, instance) {
+    backdropShield = document.createElement('div');
+    backdropShield.classList.add('calendar-backdrop-shield');
+
+    const killEvent = (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+    };
+
+    ['touchstart', 'mousedown', 'click'].forEach((evtType) => {
+      backdropShield.addEventListener(evtType, (e) => {
+        killEvent(e);
+        instance.close();
+      });
+    });
+
+    document.body.appendChild(backdropShield);
+  },
+
+  onClose: function () {
+    if (backdropShield) {
+      setTimeout(() => {
+        if (backdropShield) {
+          backdropShield.remove();
+          backdropShield = null;
+        }
+      }, 50);
+    }
+  },
 });
 
 resetTaskButton.addEventListener('click', () => {

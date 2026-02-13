@@ -6,17 +6,11 @@
 
 .flatpickr-calendar {
   position: fixed !important;
-  top: 75% !important;
+  top: 70% !important;
   left: 50% !important;
   transform: translate(-50%, -50%) !important;
   z-index: 99999 !important;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2) !important;
-}
-
-.flatpickr-calendar.open {
-  box-shadow:
-    0 10px 40px rgba(0, 0, 0, 0.2),
-    0 0 0 1000px rgba(0, 0, 0, 0.5) !important;
 }
 
 .flatpickr-months .flatpickr-month {
@@ -52,4 +46,23 @@ span.flatpickr-weekday {
 
 .dayContainer {
   padding: 4px;
+}
+
+.calendar-backdrop-shield {
+  position: fixed;
+  inset: 0;
+  z-index: 1500;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  cursor: default;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
