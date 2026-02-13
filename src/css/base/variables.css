@@ -70,12 +70,14 @@
   --border-radius-sm: 4px;
   --border-radius-md: 8px;
   --border-radius-lg: 16px;
-  --border-radius-xl: 24px;
+  --border-radius-xl: 22px;
+  --border-radius-2xl: 24px;
   --border-radius-full: 9999px;
   --border-width: 1px;
 
   /* Shadows Colors */
   --shadow-light: rgba(226, 232, 240, 0.5);
+  --shadow-dark: rgba(0, 0, 0, 0.3);
 
   /* Transitions */
   --transition-fast: 0.2s ease-in-out;
