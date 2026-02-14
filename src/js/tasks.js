@@ -53,7 +53,7 @@ export function getCountdownText(deadline) {
   const timeDifference = targetTime - now;
 
   if (timeDifference <= 0) {
-    return { text: 'Expirado!', isOverdue: true };
+    return { text: 'Expirado', isOverdue: true };
   }
 
   const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
@@ -68,6 +68,23 @@ export function getCountdownText(deadline) {
   text += `${minutes}m`;
 
   return { text, isOverdue: false };
+}
+
+function formatTaskDate(dateString) {
+  if (!dateString) return '';
+  const date = new Date(dateString.replace(/-/g, '/'));
+  const currentYear = new Date().getFullYear();
+  const taskYear = date.getFullYear();
+  const options = {
+    day: 'numeric',
+    month: 'long',
+    hour: '2-digit',
+    minute: '2-digit',
+  };
+  if (taskYear !== currentYear) {
+    options.year = 'numeric';
+  }
+  return date.toLocaleDateString('pt-BR', options);
 }
 
 /**
@@ -169,17 +186,7 @@ export function createTaskItem(task) {
   taskItem.appendChild(taskCountdown);
 
   if (task.dateTime) {
-    const dateObj = new Date(task.dateTime);
-    const formattedDate = dateObj
-      .toLocaleDateString('pt-BR', {
-        day: '2-digit',
-        month: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-      })
-      .replace(',', ' às');
-
-    taskDateTime.textContent = formattedDate;
+    taskDateTime.textContent = formatTaskDate(task.dateTime);
   } else {
     taskDateTime.textContent = '';
   }
