@@ -7,6 +7,8 @@ import {
   toggleTaskCompletionInStorage,
 } from './storage.js';
 
+const taskList = document.getElementById('todo-list');
+const emptyStateMessage = document.getElementById('empty-state');
 const openButtonSection = document.getElementById('btn-open-form');
 const closeButtonSection = document.getElementById('close-form');
 const containerForm = document.querySelector('.form-container');
@@ -14,8 +16,10 @@ const taskForm = document.getElementById('task-form');
 const taskInputName = document.getElementById('task-title');
 const inputWrapper = document.querySelector('.input-wrapper');
 const resetTaskButton = document.getElementById('btn-reset');
-const taskList = document.getElementById('todo-list');
-const emptyStateMessage = document.getElementById('empty-state');
+const priorityContainer = document.getElementById('priority-selector');
+const priorityInputs = priorityContainer.querySelectorAll(
+  'input[name="priority"]'
+);
 
 function toggleEmptyState() {
   const hasTasks = taskList.children.length > 0;
@@ -79,6 +83,7 @@ taskForm.addEventListener('submit', (e) => {
     taskList.insertBefore(taskElement, firstTask);
     taskForm.reset();
     fp.clear();
+    updatePriorityVisuals();
     containerForm.classList.remove('open');
   }
   toggleEmptyState();
@@ -248,11 +253,26 @@ const fp = flatpickr('#task-datetime', {
   },
 });
 
+function updatePriorityVisuals() {
+  const selected = document.querySelector('input[name="priority"]:checked');
+
+  if (selected) {
+    priorityContainer.setAttribute('data-selected', selected.value);
+  }
+}
+
+priorityInputs.forEach((input) => {
+  input.addEventListener('change', updatePriorityVisuals);
+});
+
+updatePriorityVisuals();
+
 resetTaskButton.addEventListener('click', () => {
   inputWrapper.classList.remove('has-error');
   resetTaskButton.classList.add('is-spinning');
   taskForm.reset();
   fp.clear();
+  updatePriorityVisuals();
   setTimeout(() => {
     resetTaskButton.classList.remove('is-spinning');
   }, 500);
