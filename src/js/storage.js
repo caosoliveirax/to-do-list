@@ -3,6 +3,15 @@ export function getTasksFromStorage() {
   return tasks ? tasks : [];
 }
 
+export function updateTaskInStorage(updatedTask) {
+  let tasks = getTasksFromStorage();
+  tasks = tasks.map((task) =>
+    task.id === updatedTask.id ? updatedTask : task
+  );
+  localStorage.setItem('myTasks', JSON.stringify(tasks));
+  return true;
+}
+
 export function addTaskToStorage(task) {
   let tasks = JSON.parse(localStorage.getItem('myTasks')) || [];
 

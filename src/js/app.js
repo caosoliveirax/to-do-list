@@ -5,12 +5,18 @@ import {
   addTaskToStorage,
   removeTaskFromStorage,
   toggleTaskCompletionInStorage,
+  updateTaskInStorage,
 } from './storage.js';
+
+let isEditMode = false;
+let currentEditTaskId = null;
+let currentRescheduleTaskId = null;
 
 const taskList = document.getElementById('todo-list');
 const emptyStateMessage = document.getElementById('empty-state');
 const openButtonSection = document.getElementById('btn-open-form');
 const closeButtonSection = document.getElementById('close-form');
+const formTitle = document.querySelector('.header-form .section-title');
 const containerForm = document.querySelector('.form-container');
 const taskForm = document.getElementById('task-form');
 const taskInputName = document.getElementById('task-title');
@@ -20,26 +26,17 @@ const priorityContainer = document.getElementById('priority-selector');
 const priorityInputs = priorityContainer.querySelectorAll(
   'input[name="priority"]'
 );
-
-function toggleEmptyState() {
-  const hasTasks = taskList.children.length > 0;
-
-  if (hasTasks) {
-    emptyStateMessage.classList.add('hidden');
-  } else {
-    emptyStateMessage.classList.remove('hidden');
-  }
-}
+const btnSubmit = document.getElementById('btn-add');
+const formContent = document.getElementById('form-content');
+const formContainer = document.getElementById('form-container');
 
 const dateElement = document.getElementById('today');
 if (dateElement) {
   const now = new Date();
-
   const options = { weekday: 'long', day: 'numeric', month: 'long' };
   const dateString = now.toLocaleDateString('pt-BR', options);
   const formattedDate =
     dateString.charAt(0).toUpperCase() + dateString.slice(1);
-
   dateElement.textContent = formattedDate;
   dateElement.setAttribute('datetime', now.toISOString().split('T')[0]);
 }
@@ -48,23 +45,189 @@ const localTasks = getTasksFromStorage();
 localTasks.forEach((task) => {
   const taskElement = createTaskItem(task);
   const firstTask = taskList.firstChild;
-
   taskList.insertBefore(taskElement, firstTask);
 });
-
 toggleEmptyState();
 
-document.addEventListener('click', (e) => {
-  const isDropdown = e.target.closest('.task-menu');
-  if (!isDropdown) {
-    document.querySelectorAll('.task-menu-dropdown').forEach((el) => {
-      el.classList.add('hidden');
-    });
-  }
+const rescheduleInput = document.createElement('input');
+rescheduleInput.style.display = 'none';
+document.body.appendChild(rescheduleInput);
+
+const quickFp = flatpickr(rescheduleInput, {
+  enableTime: true,
+  dateFormat: 'Y-m-d H:i',
+  locale: 'pt',
+  time_24hr: true,
+  disableMobile: 'true',
+  onOpen: function (selectedDates, dateStr, instance) {
+    const shield = document.createElement('div');
+    shield.classList.add('calendar-backdrop-shield');
+    shield.addEventListener('click', () => instance.close());
+    document.body.appendChild(shield);
+    instance.customShield = shield;
+  },
+  onClose: function (selectedDates, dateStr, instance) {
+    if (instance.customShield) instance.customShield.remove();
+
+    if (selectedDates.length > 0 && currentRescheduleTaskId) {
+      const tasks = getTasksFromStorage();
+      const taskIndex = tasks.findIndex(
+        (t) => t.id === Number(currentRescheduleTaskId)
+      );
+
+      if (taskIndex > -1) {
+        const updatedTask = { ...tasks[taskIndex], dateTime: dateStr };
+        updateTaskInStorage(updatedTask);
+        location.reload();
+      }
+    }
+    currentRescheduleTaskId = null;
+  },
 });
+
+let backdropShield = null;
+const fp = flatpickr('#task-datetime', {
+  enableTime: true,
+  dateFormat: 'Y-m-d H:i',
+  altInput: true,
+  altFormat: 'j \\de F, H:i',
+  locale: 'pt',
+  time_24hr: true,
+  disableMobile: 'true',
+  parseDate: (datestr, format) => {
+    const defaultDate = flatpickr.parseDate(datestr, format);
+    if (defaultDate) return defaultDate;
+    const ptDate = flatpickr.parseDate(datestr, 'd/m/Y H:i');
+    if (ptDate) return ptDate;
+    const simpleDate = flatpickr.parseDate(datestr, 'd/m/Y');
+    if (simpleDate) return simpleDate;
+    return flatpickr.parseDate(datestr, format);
+  },
+  onChange: function (selectedDates, dateStr, instance) {
+    if (selectedDates.length === 0) return;
+    const taskDate = selectedDates[0];
+    const currentYear = new Date().getFullYear();
+    if (taskDate.getFullYear() !== currentYear) {
+      instance.set('altFormat', 'j \\de F \\de Y, H:i');
+    } else {
+      instance.set('altFormat', 'j \\de F, H:i');
+    }
+    if (instance.altInput) {
+      instance.altInput.value = instance.formatDate(
+        taskDate,
+        instance.config.altFormat
+      );
+    }
+  },
+  onOpen: function (selectedDates, dateStr, instance) {
+    backdropShield = document.createElement('div');
+    backdropShield.classList.add('calendar-backdrop-shield');
+    const killEvent = (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+    };
+    ['touchstart', 'mousedown', 'click'].forEach((evtType) => {
+      backdropShield.addEventListener(evtType, (e) => {
+        killEvent(e);
+        instance.close();
+      });
+    });
+    document.body.appendChild(backdropShield);
+  },
+  onClose: function () {
+    if (backdropShield) {
+      setTimeout(() => {
+        if (backdropShield) {
+          backdropShield.remove();
+          backdropShield = null;
+        }
+      }, 50);
+    }
+  },
+});
+
+function toggleEmptyState() {
+  const hasTasks = taskList.children.length > 0;
+  if (hasTasks) {
+    emptyStateMessage.classList.add('hidden');
+  } else {
+    emptyStateMessage.classList.remove('hidden');
+  }
+}
+
+function openEditForm(task) {
+  isEditMode = true;
+  currentEditTaskId = task.id;
+
+  taskInputName.value = task.title;
+  fp.setDate(task.dateTime);
+
+  const catInput = document.querySelector(
+    `input[name="category"][value="${task.categoryValue}"]`
+  );
+  if (catInput) catInput.checked = true;
+
+  const prioInput = document.querySelector(
+    `input[name="priority"][value="${task.priorityValue}"]`
+  );
+  if (prioInput) prioInput.checked = true;
+
+  updatePriorityVisuals();
+
+  formTitle.textContent = 'Editar Tarefa';
+  btnSubmit.innerHTML = `<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M227.31,73.37,182.63,28.68a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H92.69A15.86,15.86,0,0,0,104,219.31L227.31,96a16,16,0,0,0,0-22.63ZM92.69,208H48V163.31l88-88L180.69,120ZM192,108.68,147.31,64l24-24L216,84.68Z"/></svg> Salvar Alterações`;
+  containerForm.classList.add('open');
+}
+
+function resetFormState() {
+  isEditMode = false;
+  currentEditTaskId = null;
+  formTitle.textContent = 'Nova Tarefa';
+  btnSubmit.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor">
+      <path d="M228,128a12,12,0,0,1-12,12H140v76a12,12,0,0,1-24,0V140H40a12,12,0,0,1,0-24h76V40a12,12,0,0,1,24,0v76h76A12,12,0,0,1,228,128Z" />
+    </svg> Adicionar tarefa`;
+
+  taskForm.reset();
+  fp.clear();
+  updatePriorityVisuals();
+  containerForm.classList.remove('open');
+  toggleEmptyState();
+}
+
+function updatePriorityVisuals() {
+  const selected = document.querySelector('input[name="priority"]:checked');
+  if (selected) {
+    priorityContainer.setAttribute('data-selected', selected.value);
+  }
+}
+
+function updateAllCountdowns() {
+  const allTasks = document.querySelectorAll('.task-item');
+  allTasks.forEach((taskItem) => {
+    const deadline = taskItem.dataset.deadline;
+    if (!deadline || taskItem.classList.contains('completed')) return;
+
+    const countdownData = getCountdownText(deadline);
+    const countdownElement = taskItem.querySelector('.task-countdown');
+
+    if (countdownElement && countdownData) {
+      countdownElement.textContent = countdownData.text;
+      if (countdownData.isOverdue) {
+        taskItem.classList.add('overdue');
+      } else {
+        taskItem.classList.remove('overdue');
+      }
+    }
+  });
+}
 
 taskInputName.addEventListener('focus', () => {
   inputWrapper.classList.remove('has-error');
+});
+
+priorityInputs.forEach((input) => {
+  input.addEventListener('change', updatePriorityVisuals);
 });
 
 taskForm.addEventListener('submit', (e) => {
@@ -76,41 +239,55 @@ taskForm.addEventListener('submit', (e) => {
     return;
   }
 
-  const taskSaved = addTaskToStorage(taskData);
-  if (taskSaved) {
-    const taskElement = createTaskItem(taskData);
-    const firstTask = taskList.firstChild;
-    taskList.insertBefore(taskElement, firstTask);
-    taskForm.reset();
-    fp.clear();
-    updatePriorityVisuals();
-    containerForm.classList.remove('open');
+  if (isEditMode) {
+    const tasks = getTasksFromStorage();
+    const originalTask = tasks.find((t) => t.id === currentEditTaskId);
+
+    taskData.id = currentEditTaskId;
+    taskData.completed = originalTask ? originalTask.completed : false;
+
+    updateTaskInStorage(taskData);
+    location.reload();
+  } else {
+    const taskSaved = addTaskToStorage(taskData);
+    if (taskSaved) {
+      const taskElement = createTaskItem(taskData);
+      const firstTask = taskList.firstChild;
+      taskList.insertBefore(taskElement, firstTask);
+    }
   }
-  toggleEmptyState();
+  resetFormState();
 });
 
 taskList.addEventListener('click', (e) => {
   const targetElement = e.target;
   const taskItem = targetElement.closest('.task-item');
+  if (!taskItem) return;
   const taskId = taskItem.dataset.id;
 
-  if (!taskItem) return;
+  const editBtn = targetElement.closest('.edit-button');
+  if (editBtn) {
+    const tasks = getTasksFromStorage();
+    const taskToEdit = tasks.find((t) => t.id === Number(taskId));
+    if (taskToEdit) openEditForm(taskToEdit);
+    return;
+  }
 
-  const menuTrigger = targetElement.closest('.btn-action-trigger');
-  if (menuTrigger) {
-    const dropdown = menuTrigger.nextElementSibling;
-    document.querySelectorAll('.task-menu-dropdown').forEach((el) => {
-      if (el !== dropdown) {
-        el.classList.add('hidden');
-      }
-    });
-    dropdown.classList.toggle('hidden');
+  const rescheduleBtn = targetElement.closest('.reschedule-button');
+  if (rescheduleBtn) {
+    currentRescheduleTaskId = taskId;
+    const tasks = getTasksFromStorage();
+    const task = tasks.find((t) => t.id === Number(taskId));
+
+    if (task) {
+      quickFp.setDate(task.dateTime || new Date());
+      quickFp.open();
+    }
     return;
   }
 
   if (targetElement.classList.contains('task-checkbox')) {
     taskItem.classList.toggle('completed');
-
     if (taskItem.classList.contains('completed')) {
       taskItem.classList.remove('overdue');
     } else {
@@ -144,16 +321,27 @@ openButtonSection.addEventListener('click', (e) => {
 containerForm.addEventListener('click', (e) => {
   if (e.target === containerForm) {
     containerForm.classList.remove('open');
+    if (isEditMode) resetFormState();
   }
 });
 
 closeButtonSection.addEventListener('click', (e) => {
   e.preventDefault();
   containerForm.classList.remove('open');
+  if (isEditMode) resetFormState();
 });
 
-const formContent = document.getElementById('form-content');
-const formContainer = document.getElementById('form-container');
+resetTaskButton.addEventListener('click', () => {
+  inputWrapper.classList.remove('has-error');
+  resetTaskButton.classList.add('is-spinning');
+  taskForm.reset();
+  fp.clear();
+  updatePriorityVisuals();
+  setTimeout(() => {
+    resetTaskButton.classList.remove('is-spinning');
+  }, 500);
+  taskInputName.focus();
+});
 
 let touchStartY = 0;
 let touchEndY = 0;
@@ -170,138 +358,15 @@ formContent.addEventListener(
   'touchend',
   (e) => {
     touchEndY = e.changedTouches[0].screenY;
-    handleSwipe();
+    const swipeDistance = touchEndY - touchStartY;
+    if (swipeDistance > 200) {
+      formContainer.classList.remove('open');
+      if (isEditMode) resetFormState();
+    }
   },
   { passive: true }
 );
 
-function handleSwipe() {
-  const swipeDistance = touchEndY - touchStartY;
-
-  if (swipeDistance > 200) {
-    formContainer.classList.remove('open');
-  }
-}
-
-let backdropShield = null;
-
-const fp = flatpickr('#task-datetime', {
-  enableTime: true,
-  dateFormat: 'Y-m-d H:i',
-  altInput: true,
-  altFormat: 'j \\de F, H:i',
-  locale: 'pt',
-  time_24hr: true,
-  disableMobile: 'true',
-
-  parseDate: (datestr, format) => {
-    const ptDate = flatpickr.parseDate(datestr, 'd/m/Y H:i');
-    if (ptDate) return ptDate;
-    const simpleDate = flatpickr.parseDate(datestr, 'd/m/Y');
-    if (simpleDate) return simpleDate;
-    return flatpickr.parseDate(datestr, format);
-  },
-
-  onChange: function (selectedDates, dateStr, instance) {
-    if (selectedDates.length === 0) return;
-
-    const taskDate = selectedDates[0];
-    const currentYear = new Date().getFullYear();
-
-    if (taskDate.getFullYear() !== currentYear) {
-      instance.set('altFormat', 'j \\de F \\de Y, H:i');
-    } else {
-      instance.set('altFormat', 'j \\de F, H:i');
-    }
-
-    if (instance.altInput) {
-      instance.altInput.value = instance.formatDate(
-        taskDate,
-        instance.config.altFormat
-      );
-    }
-  },
-
-  onOpen: function (selectedDates, dateStr, instance) {
-    backdropShield = document.createElement('div');
-    backdropShield.classList.add('calendar-backdrop-shield');
-
-    const killEvent = (e) => {
-      e.stopPropagation();
-      e.preventDefault();
-    };
-
-    ['touchstart', 'mousedown', 'click'].forEach((evtType) => {
-      backdropShield.addEventListener(evtType, (e) => {
-        killEvent(e);
-        instance.close();
-      });
-    });
-
-    document.body.appendChild(backdropShield);
-  },
-
-  onClose: function () {
-    if (backdropShield) {
-      setTimeout(() => {
-        if (backdropShield) {
-          backdropShield.remove();
-          backdropShield = null;
-        }
-      }, 50);
-    }
-  },
-});
-
-function updatePriorityVisuals() {
-  const selected = document.querySelector('input[name="priority"]:checked');
-
-  if (selected) {
-    priorityContainer.setAttribute('data-selected', selected.value);
-  }
-}
-
-priorityInputs.forEach((input) => {
-  input.addEventListener('change', updatePriorityVisuals);
-});
-
 updatePriorityVisuals();
-
-resetTaskButton.addEventListener('click', () => {
-  inputWrapper.classList.remove('has-error');
-  resetTaskButton.classList.add('is-spinning');
-  taskForm.reset();
-  fp.clear();
-  updatePriorityVisuals();
-  setTimeout(() => {
-    resetTaskButton.classList.remove('is-spinning');
-  }, 500);
-
-  taskInputName.focus();
-});
-
-function updateAllCountdowns() {
-  const allTasks = document.querySelectorAll('.task-item');
-
-  allTasks.forEach((taskItem) => {
-    const deadline = taskItem.dataset.deadline;
-
-    if (!deadline || taskItem.classList.contains('completed')) return;
-
-    const countdownData = getCountdownText(deadline);
-    const countdownElement = taskItem.querySelector('.task-countdown');
-
-    if (countdownElement && countdownData) {
-      countdownElement.textContent = countdownData.text;
-
-      if (countdownData.isOverdue) {
-        taskItem.classList.add('overdue');
-      } else {
-        taskItem.classList.remove('overdue');
-      }
-    }
-  });
-}
-
 setInterval(updateAllCountdowns, 60000);
 updateAllCountdowns();

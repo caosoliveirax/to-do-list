@@ -33,7 +33,7 @@
   flex-direction: column;
   padding: 20px;
   background-color: var(--color-bg-card);
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--border-radius-2xl);
   border: 1px solid var(--color-border-light);
   gap: var(--spacing-sm);
   transition:
@@ -84,7 +84,10 @@
 .task-footer {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
+  gap: var(--spacing-sm);
+  border-top: 1px solid var(--color-border-light);
+  padding-top: var(--spacing-ms);
 }
 
 .priority-container {
@@ -125,6 +128,14 @@
   text-transform: uppercase;
 }
 
+.actions-container {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  border-right: 1px solid var(--color-border-light);
+  padding-right: var(--spacing-sm);
+}
+
 .task-checkbox {
   appearance: none;
   -webkit-appearance: none;
@@ -134,7 +145,7 @@
   margin: 0;
   border: none;
   background-color: var(--color-bg-subtle);
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--border-radius-2xl);
   padding: 0;
   cursor: pointer;
   display: flex;
@@ -202,10 +213,6 @@
 .task-item.overdue .category-icon,
 .task-item.overdue .task-checkbox::after {
   filter: grayscale(100%);
-}
-
-.task-item.overdue .btn-action-trigger svg {
-  color: var(--color-overdue);
 }
 
 .task-item.overdue .task-datetime {

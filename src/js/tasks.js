@@ -132,32 +132,30 @@ export function createTaskItem(task) {
   taskCategory.classList.add('category-icon');
   taskCategory.src = categoryIcons[task.categoryValue];
 
-  const menuContainer = document.createElement('div');
-  menuContainer.classList.add('task-menu');
+  const priorityContainer = document.createElement('div');
+  priorityContainer.classList.add('priority-container');
+  priorityContainer.setAttribute(
+    'aria-label',
+    `Prioridade: ${task.priorityLabel}`
+  );
 
-  const menuTrigger = document.createElement('button');
-  menuTrigger.type = 'button';
-  menuTrigger.classList.add('btn-action-trigger');
-  menuTrigger.innerHTML = `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M112,60a16,16,0,1,1,16,16A16,16,0,0,1,112,60Zm16,52a16,16,0,1,0,16,16A16,16,0,0,0,128,112Zm0,68a16,16,0,1,0,16,16A16,16,0,0,0,128,180Z"/></svg>
-    `;
+  const starsCount = {
+    none: 0,
+    low: 1,
+    medium: 2,
+    high: 3,
+  };
 
-  const menuDropdown = document.createElement('div');
-  menuDropdown.classList.add('task-menu-dropdown', 'hidden');
+  const count = starsCount[task.priorityValue] || 0;
 
-  const removeBtn = document.createElement('button');
-  removeBtn.type = 'button';
-  removeBtn.classList.add('remove-button');
-  removeBtn.alt = 'Excluir tarefa';
-  removeBtn.innerHTML = `
-    <img src="./src/assets/trash.svg" alt="">
-    <span>Excluir</span>
-`;
+  for (let i = 0; i < count; i++) {
+    const starIcon = document.createElement('span');
+    starIcon.classList.add('star-icon');
+    starIcon.setAttribute('aria-hidden', 'true');
+    priorityContainer.appendChild(starIcon);
+  }
 
-  menuDropdown.appendChild(removeBtn);
-  menuContainer.appendChild(menuTrigger);
-  menuContainer.appendChild(menuDropdown);
-  taskHeader.appendChild(menuContainer);
+  taskHeader.appendChild(priorityContainer);
 
   const taskTitle = document.createElement('p');
   taskTitle.classList.add('task-title');
@@ -195,30 +193,36 @@ export function createTaskItem(task) {
   footerTask.classList.add('task-footer');
   taskItem.appendChild(footerTask);
 
-  const priorityContainer = document.createElement('div');
-  priorityContainer.classList.add('priority-container');
-  priorityContainer.setAttribute(
-    'aria-label',
-    `Prioridade: ${task.priorityLabel}`
-  );
+  const actionsContainer = document.createElement('div');
+  actionsContainer.classList.add('actions-container');
+  footerTask.appendChild(actionsContainer);
 
-  const starsCount = {
-    none: 0,
-    low: 1,
-    medium: 2,
-    high: 3,
-  };
+  const editBtn = document.createElement('button');
+  editBtn.type = 'button';
+  editBtn.classList.add('btn-action', 'edit-button');
+  editBtn.alt = 'Editar tarefa';
+  editBtn.innerHTML = `
+    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M227.31,73.37,182.63,28.68a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H92.69A15.86,15.86,0,0,0,104,219.31L227.31,96a16,16,0,0,0,0-22.63ZM92.69,208H48V163.31l88-88L180.69,120ZM192,108.68,147.31,64l24-24L216,84.68Z"/></svg>
+`;
+  actionsContainer.appendChild(editBtn);
 
-  const count = starsCount[task.priorityValue] || 0;
+  const rescheduleBtn = document.createElement('button');
+  rescheduleBtn.type = 'button';
+  rescheduleBtn.classList.add('btn-action', 'reschedule-button');
+  rescheduleBtn.alt = 'Reagendar tarefa';
+  rescheduleBtn.innerHTML = `
+    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z"/></svg>
+`;
+  actionsContainer.appendChild(rescheduleBtn);
 
-  for (let i = 0; i < count; i++) {
-    const starIcon = document.createElement('span');
-    starIcon.classList.add('star-icon');
-    starIcon.setAttribute('aria-hidden', 'true');
-    priorityContainer.appendChild(starIcon);
-  }
-
-  footerTask.appendChild(priorityContainer);
+  const removeBtn = document.createElement('button');
+  removeBtn.type = 'button';
+  removeBtn.classList.add('btn-action', 'remove-button');
+  removeBtn.alt = 'Excluir tarefa';
+  removeBtn.innerHTML = `
+    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M216,48H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM192,208H64V64H192ZM80,24a8,8,0,0,1,8-8h80a8,8,0,0,1,0,16H88A8,8,0,0,1,80,24Z"/></svg>
+`;
+  actionsContainer.appendChild(removeBtn);
 
   const taskCheckbox = document.createElement('input');
   taskCheckbox.type = 'checkbox';
