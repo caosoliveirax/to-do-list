@@ -1,4 +1,4 @@
-import { getCountdownText } from './tasks.js';
+import { getCountdownText } from './utils.js';
 
 export function updateHeaderDate() {
   const dateElement = document.getElementById('today');

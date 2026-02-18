@@ -22,7 +22,6 @@ const taskList = document.getElementById('todo-list');
 const openButtonSection = document.getElementById('btn-open-form');
 const closeButtonSection = document.getElementById('close-form');
 const formTitle = document.querySelector('.header-form .section-title');
-const containerForm = document.querySelector('.form-container');
 const taskForm = document.getElementById('task-form');
 const taskInputName = document.getElementById('task-title');
 const inputWrapper = document.querySelector('.input-wrapper');
@@ -70,7 +69,7 @@ function openEditForm(task) {
 
   formTitle.textContent = 'Editar Tarefa';
   btnSubmit.innerHTML = `<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M227.31,73.37,182.63,28.68a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H92.69A15.86,15.86,0,0,0,104,219.31L227.31,96a16,16,0,0,0,0-22.63ZM92.69,208H48V163.31l88-88L180.69,120ZM192,108.68,147.31,64l24-24L216,84.68Z"/></svg> Salvar Alterações`;
-  containerForm.classList.add('open');
+  formContainer.classList.add('open');
 }
 
 function resetFormState() {
@@ -85,7 +84,7 @@ function resetFormState() {
   taskForm.reset();
   fp.clear();
   updatePriorityVisuals();
-  containerForm.classList.remove('open');
+  formContainer.classList.remove('open');
   toggleEmptyState(taskList);
 }
 
@@ -175,19 +174,19 @@ taskList.addEventListener('click', (e) => {
 openButtonSection.addEventListener('click', (e) => {
   e.preventDefault();
   inputWrapper.classList.remove('has-error');
-  containerForm.classList.toggle('open');
+  formContainer.classList.toggle('open');
 });
 
-containerForm.addEventListener('click', (e) => {
-  if (e.target === containerForm) {
-    containerForm.classList.remove('open');
+formContainer.addEventListener('click', (e) => {
+  if (e.target === formContainer) {
+    formContainer.classList.remove('open');
     if (isEditMode) resetFormState();
   }
 });
 
 closeButtonSection.addEventListener('click', (e) => {
   e.preventDefault();
-  containerForm.classList.remove('open');
+  formContainer.classList.remove('open');
   if (isEditMode) resetFormState();
 });
 
