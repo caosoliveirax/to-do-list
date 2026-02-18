@@ -23,15 +23,6 @@ export function toggleEmptyState(taskList) {
   }
 }
 
-export function updatePriorityVisuals() {
-  const priorityContainer = document.getElementById('priority-selector');
-  const selected = document.querySelector('input[name="priority"]:checked');
-
-  if (selected && priorityContainer) {
-    priorityContainer.setAttribute('data-selected', selected.value);
-  }
-}
-
 export function updateAllCountdowns() {
   const allTasks = document.querySelectorAll('.task-item');
   allTasks.forEach((taskItem) => {

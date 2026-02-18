@@ -18,51 +18,6 @@ const PRIORITY_STARS = {
 };
 
 /**
- * Captura os dados do formulário HTML e retorna um objeto de tarefa.
- * @returns {Object|undefined} O objeto da tarefa ou undefined se o título estiver vazio.
- */
-export function getTaskData() {
-  const inputTask = document.getElementById('task-title');
-  const inputDateTime = document.getElementById('task-datetime');
-  const selectedPriorityInput = document.querySelector(
-    'input[name="priority"]:checked'
-  );
-  const selectedCategoryInput = document.querySelector(
-    'input[name="category"]:checked'
-  );
-
-  const title = inputTask.value.trim();
-  const dateTime = inputDateTime.value;
-  const categoryLabel = selectedCategoryInput
-    ? selectedCategoryInput.dataset.label
-    : 'Pessoal';
-  const categoryValue = selectedCategoryInput
-    ? selectedCategoryInput.value
-    : 'personal';
-
-  const priorityLabel = selectedPriorityInput
-    ? selectedPriorityInput.dataset.label
-    : 'Nenhuma';
-  const priorityValue = selectedPriorityInput
-    ? selectedPriorityInput.value
-    : 'none';
-
-  if (title.length > 0) {
-    return {
-      id: Date.now(),
-      title,
-      dateTime,
-      categoryLabel,
-      categoryValue,
-      priorityValue,
-      priorityLabel,
-      completed: false,
-    };
-  }
-  return null;
-}
-
-/**
  * Cria o elemento HTML (item de lista) para representar uma tarefa no DOM.
  * Esta função é responsável por construir toda a estrutura visual de uma tarefa,
  * incluindo os badges de categoria, título, data formatada, contador regressivo,
