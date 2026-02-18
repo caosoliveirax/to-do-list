@@ -15,9 +15,7 @@
 <body>
   <header class="header-todo">
     <h1 class="title">Slice Of Lice</h1>
-    <h2 class="sub-title">
-      <time id="today"></time>
-    </h2>
+    <time id="today"></time>
   </header>
   <main class="container">
     <section class="todo-container" aria-label="Lista de tarefas">
@@ -206,6 +204,18 @@
       </div>
     </section>
   </main>
+  <div class="toast-container">
+    <div class="toast-card">
+      <div class="toast-content">
+        <span class="toast-text">Tarefa excluída</span>
+        <button class="toast-button" type="button">Desfazer</button>
+      </div>
+
+      <div class="progress-track">
+        <div class="progress-fill"></div>
+      </div>
+    </div>
+  </div>
   <button id="btn-open-form" class="fab-add-task" aria-label="Abrir formulário de nova tarefa">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor">
       <path

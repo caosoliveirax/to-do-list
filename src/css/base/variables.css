@@ -2,6 +2,7 @@
   /* --- Main --- */
   --color-primary: #e46b1b;
   --color-primary-light: rgba(228, 107, 27, 0.5);
+  --color-primary-solid: #db8a53;
 
   /* --- Feedback --- */
   --color-overdue: #ef4444;
@@ -79,6 +80,7 @@
 
   /* Shadows Colors */
   --shadow-light: rgba(226, 232, 240, 0.5);
+  --shadow-white: rgb(255 255 255 / 0.2);
   --shadow-dark: rgba(0, 0, 0, 0.3);
 
   /* Transitions */
