@@ -1,3 +1,24 @@
+const CATEGORY_ICONS = {
+  personal: './src/assets/personal.svg',
+  entertainment: './src/assets/entertainment.svg',
+  home: './src/assets/home.svg',
+  health: './src/assets/health.svg',
+  shopping: './src/assets/shopping.svg',
+  work: './src/assets/work.svg',
+  study: './src/assets/study.svg',
+};
+
+const PRIORITY_STARS = {
+  none: 0,
+  low: 1,
+  medium: 2,
+  high: 3,
+};
+
+/**
+ * Captura os dados do formulário HTML e retorna um objeto de tarefa.
+ * @returns {Object|undefined} O objeto da tarefa ou undefined se o título estiver vazio.
+ */
 export function getTaskData() {
   const inputTask = document.getElementById('task-title');
   const inputDateTime = document.getElementById('task-datetime');
@@ -36,14 +57,13 @@ export function getTaskData() {
       completed: false,
     };
   }
+  return null;
 }
 
 /**
- * Calcula o tempo restante até o prazo final (deadline) e retorna o texto formatado.
- *    @param {string} deadline - A data e hora do prazo (no formato aceito pelo construtor Date).
- * @returns {Object|null} Objeto com a contagem ou null caso o prazo seja inválido.
- * @property {string} text - O texto formatado para exibição (ex: "Restam: 1d 5h 30m").
- * @property {boolean} isOverdue - Define se a tarefa está atrasada (prazo expirado).
+ * Calcula o tempo restante e verifica se está atrasado.
+ * @param {string} deadline - Data limite.
+ * @returns {Object|null} { text: "1d 2h", isOverdue: boolean }
  */
 export function getCountdownText(deadline) {
   if (!deadline) return null;
@@ -67,20 +87,25 @@ export function getCountdownText(deadline) {
   if (hours > 0) text += `${hours}h `;
   text += `${minutes}m`;
 
-  return { text, isOverdue: false };
+  return { text: text.trim(), isOverdue: false };
 }
 
+/**
+ * Formata a data para exibição no card (Ex: "24 de Outubro, 15:30")
+ */
 function formatTaskDate(dateString) {
   if (!dateString) return '';
   const date = new Date(dateString.replace(/-/g, '/'));
   const currentYear = new Date().getFullYear();
   const taskYear = date.getFullYear();
+
   const options = {
     day: 'numeric',
     month: 'long',
     hour: '2-digit',
     minute: '2-digit',
   };
+
   if (taskYear !== currentYear) {
     options.year = 'numeric';
   }
@@ -106,31 +131,22 @@ function formatTaskDate(dateString) {
 export function createTaskItem(task) {
   const taskItem = document.createElement('li');
   taskItem.classList.add('task-item');
-
-  if (task.categoryValue) {
+  if (task.completed) taskItem.classList.add('completed');
+  if (task.categoryValue)
     taskItem.classList.add(`category-${task.categoryValue}`);
-  }
 
   taskItem.dataset.id = task.id;
+  if (task.dateTime) taskItem.dataset.deadline = task.dateTime;
 
   const taskHeader = document.createElement('div');
   taskHeader.classList.add('task-header');
   taskItem.appendChild(taskHeader);
-
-  const categoryIcons = {
-    personal: './src/assets/personal.svg',
-    entertainment: './src/assets/entertainment.svg',
-    home: './src/assets/home.svg',
-    health: './src/assets/health.svg',
-    shopping: './src/assets/shopping.svg',
-    work: './src/assets/work.svg',
-    study: './src/assets/study.svg',
-  };
-
   const taskCategory = document.createElement('img');
-  taskHeader.appendChild(taskCategory);
   taskCategory.classList.add('category-icon');
-  taskCategory.src = categoryIcons[task.categoryValue];
+  taskCategory.src =
+    CATEGORY_ICONS[task.categoryValue] || CATEGORY_ICONS.personal;
+  taskCategory.alt = task.categoryLabel;
+  taskHeader.appendChild(taskCategory);
 
   const priorityContainer = document.createElement('div');
   priorityContainer.classList.add('priority-container');
@@ -138,15 +154,7 @@ export function createTaskItem(task) {
     'aria-label',
     `Prioridade: ${task.priorityLabel}`
   );
-
-  const starsCount = {
-    none: 0,
-    low: 1,
-    medium: 2,
-    high: 3,
-  };
-
-  const count = starsCount[task.priorityValue] || 0;
+  const count = PRIORITY_STARS[task.priorityValue] || 0;
 
   for (let i = 0; i < count; i++) {
     const starIcon = document.createElement('span');
@@ -154,86 +162,75 @@ export function createTaskItem(task) {
     starIcon.setAttribute('aria-hidden', 'true');
     priorityContainer.appendChild(starIcon);
   }
-
   taskHeader.appendChild(priorityContainer);
 
   const taskTitle = document.createElement('p');
   taskTitle.classList.add('task-title');
-  taskItem.appendChild(taskTitle);
   taskTitle.textContent = task.title;
+  taskItem.appendChild(taskTitle);
 
   const taskDateTime = document.createElement('span');
   taskDateTime.classList.add('task-datetime');
+  taskDateTime.textContent = formatTaskDate(task.dateTime);
   taskItem.appendChild(taskDateTime);
-
-  if (task.dateTime) {
-    taskItem.dataset.deadline = task.dateTime;
-  }
 
   const taskCountdown = document.createElement('span');
   taskCountdown.classList.add('task-countdown');
-
   if (task.dateTime) {
     const countdownData = getCountdownText(task.dateTime);
-    taskCountdown.textContent = countdownData.text;
 
-    if (countdownData.isOverdue) {
-      taskItem.classList.add('overdue');
+    if (countdownData) {
+      taskCountdown.textContent = countdownData.text;
+      if (countdownData.isOverdue && !task.completed) {
+        taskItem.classList.add('overdue');
+      }
     }
   }
   taskItem.appendChild(taskCountdown);
 
-  if (task.dateTime) {
-    taskDateTime.textContent = formatTaskDate(task.dateTime);
-  } else {
-    taskDateTime.textContent = '';
-  }
-
   const footerTask = document.createElement('div');
   footerTask.classList.add('task-footer');
-  taskItem.appendChild(footerTask);
 
   const actionsContainer = document.createElement('div');
   actionsContainer.classList.add('actions-container');
-  footerTask.appendChild(actionsContainer);
 
   const editBtn = document.createElement('button');
   editBtn.type = 'button';
   editBtn.classList.add('btn-action', 'edit-button');
-  editBtn.alt = 'Editar tarefa';
+  editBtn.setAttribute('aria-label', 'Editar tarefa');
   editBtn.innerHTML = `
-    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M227.31,73.37,182.63,28.68a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H92.69A15.86,15.86,0,0,0,104,219.31L227.31,96a16,16,0,0,0,0-22.63ZM92.69,208H48V163.31l88-88L180.69,120ZM192,108.68,147.31,64l24-24L216,84.68Z"/></svg>
-`;
+  <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M227.31,73.37,182.63,28.68a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H92.69A15.86,15.86,0,0,0,104,219.31L227.31,96a16,16,0,0,0,0-22.63ZM92.69,208H48V163.31l88-88L180.69,120ZM192,108.68,147.31,64l24-24L216,84.68Z"/></svg>
+  `;
   actionsContainer.appendChild(editBtn);
 
   const rescheduleBtn = document.createElement('button');
   rescheduleBtn.type = 'button';
   rescheduleBtn.classList.add('btn-action', 'reschedule-button');
-  rescheduleBtn.alt = 'Reagendar tarefa';
+  rescheduleBtn.setAttribute('aria-label', 'Reagendar tarefa');
   rescheduleBtn.innerHTML = `
-    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z"/></svg>
-`;
+  <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z"/></svg>
+  `;
   actionsContainer.appendChild(rescheduleBtn);
 
   const removeBtn = document.createElement('button');
   removeBtn.type = 'button';
   removeBtn.classList.add('btn-action', 'remove-button');
-  removeBtn.alt = 'Excluir tarefa';
+  removeBtn.setAttribute('aria-label', 'Excluir tarefa');
   removeBtn.innerHTML = `
-    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M216,48H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM192,208H64V64H192ZM80,24a8,8,0,0,1,8-8h80a8,8,0,0,1,0,16H88A8,8,0,0,1,80,24Z"/></svg>
-`;
+  <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M216,48H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM192,208H64V64H192ZM80,24a8,8,0,0,1,8-8h80a8,8,0,0,1,0,16H88A8,8,0,0,1,80,24Z"/></svg>
+  `;
   actionsContainer.appendChild(removeBtn);
+
+  footerTask.appendChild(actionsContainer);
 
   const taskCheckbox = document.createElement('input');
   taskCheckbox.type = 'checkbox';
   taskCheckbox.name = 'task-checkbox';
   taskCheckbox.classList.add('task-checkbox');
+  taskCheckbox.setAttribute('aria-label', 'Concluir tarefa');
   footerTask.appendChild(taskCheckbox);
 
-  if (task.completed) {
-    taskItem.classList.add('completed');
-    taskItem.classList.remove('overdue');
-    taskCheckbox.checked = true;
-  }
+  taskItem.appendChild(footerTask);
+
   return taskItem;
 }

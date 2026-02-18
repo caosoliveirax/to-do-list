@@ -1,5 +1,3 @@
-/* global flatpickr */
-import { getTaskData, createTaskItem, getCountdownText } from './tasks.js';
 import {
   getTasksFromStorage,
   addTaskToStorage,
@@ -7,13 +5,20 @@ import {
   toggleTaskCompletionInStorage,
   updateTaskInStorage,
 } from './storage.js';
+import { getTaskData, createTaskItem } from './tasks.js';
+import {
+  updateHeaderDate,
+  toggleEmptyState,
+  updatePriorityVisuals,
+  updateAllCountdowns,
+} from './ui.js';
+import { initMainCalendar, initQuickRescheduleCalendar } from './calendar.js';
 
 let isEditMode = false;
 let currentEditTaskId = null;
 let currentRescheduleTaskId = null;
 
 const taskList = document.getElementById('todo-list');
-const emptyStateMessage = document.getElementById('empty-state');
 const openButtonSection = document.getElementById('btn-open-form');
 const closeButtonSection = document.getElementById('close-form');
 const formTitle = document.querySelector('.header-form .section-title');
@@ -30,16 +35,7 @@ const btnSubmit = document.getElementById('btn-add');
 const formContent = document.getElementById('form-content');
 const formContainer = document.getElementById('form-container');
 
-const dateElement = document.getElementById('today');
-if (dateElement) {
-  const now = new Date();
-  const options = { weekday: 'long', day: 'numeric', month: 'long' };
-  const dateString = now.toLocaleDateString('pt-BR', options);
-  const formattedDate =
-    dateString.charAt(0).toUpperCase() + dateString.slice(1);
-  dateElement.textContent = formattedDate;
-  dateElement.setAttribute('datetime', now.toISOString().split('T')[0]);
-}
+updateHeaderDate();
 
 const localTasks = getTasksFromStorage();
 localTasks.forEach((task) => {
@@ -47,113 +43,11 @@ localTasks.forEach((task) => {
   const firstTask = taskList.firstChild;
   taskList.insertBefore(taskElement, firstTask);
 });
-toggleEmptyState();
 
-const rescheduleInput = document.createElement('input');
-rescheduleInput.style.display = 'none';
-document.body.appendChild(rescheduleInput);
+toggleEmptyState(taskList);
 
-const quickFp = flatpickr(rescheduleInput, {
-  enableTime: true,
-  dateFormat: 'Y-m-d H:i',
-  locale: 'pt',
-  time_24hr: true,
-  disableMobile: 'true',
-  onOpen: function (selectedDates, dateStr, instance) {
-    const shield = document.createElement('div');
-    shield.classList.add('calendar-backdrop-shield');
-    shield.addEventListener('click', () => instance.close());
-    document.body.appendChild(shield);
-    instance.customShield = shield;
-  },
-  onClose: function (selectedDates, dateStr, instance) {
-    if (instance.customShield) instance.customShield.remove();
-
-    if (selectedDates.length > 0 && currentRescheduleTaskId) {
-      const tasks = getTasksFromStorage();
-      const taskIndex = tasks.findIndex(
-        (t) => t.id === Number(currentRescheduleTaskId)
-      );
-
-      if (taskIndex > -1) {
-        const updatedTask = { ...tasks[taskIndex], dateTime: dateStr };
-        updateTaskInStorage(updatedTask);
-        location.reload();
-      }
-    }
-    currentRescheduleTaskId = null;
-  },
-});
-
-let backdropShield = null;
-const fp = flatpickr('#task-datetime', {
-  enableTime: true,
-  dateFormat: 'Y-m-d H:i',
-  altInput: true,
-  altFormat: 'j \\de F, H:i',
-  locale: 'pt',
-  time_24hr: true,
-  disableMobile: 'true',
-  parseDate: (datestr, format) => {
-    const defaultDate = flatpickr.parseDate(datestr, format);
-    if (defaultDate) return defaultDate;
-    const ptDate = flatpickr.parseDate(datestr, 'd/m/Y H:i');
-    if (ptDate) return ptDate;
-    const simpleDate = flatpickr.parseDate(datestr, 'd/m/Y');
-    if (simpleDate) return simpleDate;
-    return flatpickr.parseDate(datestr, format);
-  },
-  onChange: function (selectedDates, dateStr, instance) {
-    if (selectedDates.length === 0) return;
-    const taskDate = selectedDates[0];
-    const currentYear = new Date().getFullYear();
-    if (taskDate.getFullYear() !== currentYear) {
-      instance.set('altFormat', 'j \\de F \\de Y, H:i');
-    } else {
-      instance.set('altFormat', 'j \\de F, H:i');
-    }
-    if (instance.altInput) {
-      instance.altInput.value = instance.formatDate(
-        taskDate,
-        instance.config.altFormat
-      );
-    }
-  },
-  onOpen: function (selectedDates, dateStr, instance) {
-    backdropShield = document.createElement('div');
-    backdropShield.classList.add('calendar-backdrop-shield');
-    const killEvent = (e) => {
-      e.stopPropagation();
-      e.preventDefault();
-    };
-    ['touchstart', 'mousedown', 'click'].forEach((evtType) => {
-      backdropShield.addEventListener(evtType, (e) => {
-        killEvent(e);
-        instance.close();
-      });
-    });
-    document.body.appendChild(backdropShield);
-  },
-  onClose: function () {
-    if (backdropShield) {
-      setTimeout(() => {
-        if (backdropShield) {
-          backdropShield.remove();
-          backdropShield = null;
-        }
-      }, 50);
-    }
-  },
-});
-
-function toggleEmptyState() {
-  const hasTasks = taskList.children.length > 0;
-  if (hasTasks) {
-    emptyStateMessage.classList.add('hidden');
-  } else {
-    emptyStateMessage.classList.remove('hidden');
-  }
-}
+const quickFp = initQuickRescheduleCalendar(() => currentRescheduleTaskId);
+const fp = initMainCalendar();
 
 function openEditForm(task) {
   isEditMode = true;
@@ -192,34 +86,7 @@ function resetFormState() {
   fp.clear();
   updatePriorityVisuals();
   containerForm.classList.remove('open');
-  toggleEmptyState();
-}
-
-function updatePriorityVisuals() {
-  const selected = document.querySelector('input[name="priority"]:checked');
-  if (selected) {
-    priorityContainer.setAttribute('data-selected', selected.value);
-  }
-}
-
-function updateAllCountdowns() {
-  const allTasks = document.querySelectorAll('.task-item');
-  allTasks.forEach((taskItem) => {
-    const deadline = taskItem.dataset.deadline;
-    if (!deadline || taskItem.classList.contains('completed')) return;
-
-    const countdownData = getCountdownText(deadline);
-    const countdownElement = taskItem.querySelector('.task-countdown');
-
-    if (countdownElement && countdownData) {
-      countdownElement.textContent = countdownData.text;
-      if (countdownData.isOverdue) {
-        taskItem.classList.add('overdue');
-      } else {
-        taskItem.classList.remove('overdue');
-      }
-    }
-  });
+  toggleEmptyState(taskList);
 }
 
 taskInputName.addEventListener('focus', () => {
@@ -290,16 +157,9 @@ taskList.addEventListener('click', (e) => {
     taskItem.classList.toggle('completed');
     if (taskItem.classList.contains('completed')) {
       taskItem.classList.remove('overdue');
-    } else {
-      const deadline = taskItem.dataset.deadline;
-      if (deadline) {
-        const countdownData = getCountdownText(deadline);
-        if (countdownData && countdownData.isOverdue) {
-          taskItem.classList.add('overdue');
-        }
-      }
     }
     toggleTaskCompletionInStorage(taskId);
+    updateAllCountdowns();
     return;
   }
 
@@ -307,7 +167,7 @@ taskList.addEventListener('click', (e) => {
   if (removeBtn) {
     removeTaskFromStorage(taskId);
     taskItem.remove();
-    toggleEmptyState();
+    toggleEmptyState(taskList);
     return;
   }
 });
