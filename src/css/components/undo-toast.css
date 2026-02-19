@@ -1,14 +1,15 @@
 .toast-container {
   position: fixed;
-  bottom: 40px;
   left: 40%;
+  bottom: 38px;
   transform: translateX(-50%);
   display: flex;
   align-items: center;
-  flex-direction: column;
+  flex-direction: column-reverse;
   justify-content: center;
-  box-shadow: 0 25px 50px -12px var(--shadow-dark);
-  transition: all 300ms ease-in-out;
+  gap: var(--spacing-sm);
+  z-index: 9999;
+  pointer-events: none;
 }
 
 .toast-card {
@@ -18,6 +19,16 @@
   border-radius: var(--border-radius-lg);
   position: relative;
   overflow: hidden;
+  box-shadow: 0 10px 25px -5px var(--shadow-dark);
+  transform: translateY(20px) scale(0.95);
+  opacity: 0;
+  transition: all var(--transition-cubic-fast);
+  pointer-events: auto;
+}
+
+.toast-card.open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 .toast-content {
@@ -39,6 +50,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  padding: 5px;
   color: var(--color-text-secondary);
   font-family: var(--font-family-base);
   font-size: var(--font-size-sm);
@@ -54,11 +66,25 @@
   left: 0;
   height: 4px;
   width: 100%;
-  background-color: var(--color-text-terciary);
+  background-color: var(--color-primary-solid);
 }
 
 .progress-fill {
   height: 100%;
-  background-color: var(--color-primary-solid);
+  background-color: var(--color-text-terciary);
   transition: width 75ms linear;
+  transform-origin: left;
+}
+
+.progress-fill.is-animating {
+  animation: shrinkBar 6s linear forwards;
+}
+
+@keyframes shrinkBar {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
 }

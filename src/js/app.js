@@ -12,6 +12,7 @@ import {
   updateAllCountdowns,
 } from './ui.js';
 import { initQuickRescheduleCalendar } from './calendar.js';
+import { showToast } from './toast.js';
 import * as Form from './form.js';
 
 const taskList = document.getElementById('todo-list');
@@ -115,9 +116,20 @@ taskList.addEventListener('click', (e) => {
 
   const removeBtn = targetElement.closest('.remove-button');
   if (removeBtn) {
-    removeTaskFromStorage(taskId);
-    taskItem.remove();
+    taskItem.style.display = 'none';
     toggleEmptyState(taskList);
+
+    showToast(
+      () => {
+        removeTaskFromStorage(taskId);
+        taskItem.remove();
+        toggleEmptyState(taskList);
+      },
+      () => {
+        taskItem.style.display = '';
+        toggleEmptyState(taskList);
+      }
+    );
     return;
   }
 });

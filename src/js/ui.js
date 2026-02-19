@@ -15,7 +15,10 @@ export function updateHeaderDate() {
 
 export function toggleEmptyState(taskList) {
   const emptyStateMessage = document.getElementById('empty-state');
-  const hasTasks = taskList && taskList.children.length > 0;
+  const hasTasks = Array.from(taskList.children).some(
+    (child) => child.style.display !== 'none'
+  );
+
   if (hasTasks) {
     emptyStateMessage.classList.add('hidden');
   } else {
