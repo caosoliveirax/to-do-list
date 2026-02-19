@@ -102,10 +102,19 @@
 .star-icon {
   width: 18px;
   height: 18px;
-  background-color: var(--task-color);
-  -webkit-mask: url('../../src/assets/star.svg') no-repeat center / contain;
-  mask: url('../../assets/star.svg') no-repeat center / contain;
   transition: background-color var(--transition-fast);
+}
+
+.star-icon.outline {
+  background-color: var(--task-color);
+  -webkit-mask: url('../../assets/star.svg') no-repeat center / contain;
+  mask: url('../../assets/star.svg') no-repeat center / contain;
+}
+
+.star-icon.filled {
+  background-color: var(--task-color);
+  -webkit-mask: url('../../assets/star-fill.svg') no-repeat center / contain;
+  mask: url('../../assets/star-fill.svg') no-repeat center / contain;
 }
 
 .task-item.completed .star-icon {

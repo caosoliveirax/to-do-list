@@ -59,13 +59,23 @@ export function createTaskItem(task) {
     'aria-label',
     `Prioridade: ${task.priorityLabel}`
   );
+
   const count = PRIORITY_STARS[task.priorityValue] || 0;
 
-  for (let i = 0; i < count; i++) {
-    const starIcon = document.createElement('span');
-    starIcon.classList.add('star-icon');
-    starIcon.setAttribute('aria-hidden', 'true');
-    priorityContainer.appendChild(starIcon);
+  if (count > 0) {
+    for (let i = 0; i < 3; i++) {
+      const starIcon = document.createElement('span');
+      starIcon.classList.add('star-icon');
+
+      if (i < count) {
+        starIcon.classList.add('filled');
+      } else {
+        starIcon.classList.add('outline');
+      }
+
+      starIcon.setAttribute('aria-hidden', 'true');
+      priorityContainer.appendChild(starIcon);
+    }
   }
   taskHeader.appendChild(priorityContainer);
 
