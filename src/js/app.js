@@ -5,6 +5,7 @@ import {
   toggleTaskCompletionInStorage,
   updateTaskInStorage,
 } from './storage.js';
+import { sortTasksIntelligently } from './utils.js';
 import { createTaskItem } from './tasks.js';
 import {
   updateHeaderDate,
@@ -22,13 +23,21 @@ const taskForm = document.getElementById('task-form');
 
 updateHeaderDate();
 
-const localTasks = getTasksFromStorage();
-localTasks.forEach((task) => {
-  const taskElement = createTaskItem(task);
-  taskList.prepend(taskElement);
-});
+export function renderTasks() {
+  const tasks = getTasksFromStorage();
 
-toggleEmptyState(taskList);
+  taskList.innerHTML = '';
+
+  const sortedTasks = sortTasksIntelligently(tasks);
+
+  sortedTasks.forEach((task) => {
+    const taskElement = createTaskItem(task);
+    taskList.appendChild(taskElement);
+  });
+  toggleEmptyState(taskList);
+}
+
+renderTasks();
 
 let currentRescheduleTaskId = null;
 const quickFp = initQuickRescheduleCalendar(() => currentRescheduleTaskId);
@@ -57,11 +66,8 @@ taskForm.addEventListener('submit', (e) => {
       location.reload();
     }
   } else {
-    const taskSaved = addTaskToStorage(taskData);
-    if (taskSaved) {
-      const taskElement = createTaskItem(taskData);
-      taskList.prepend(taskElement);
-    }
+    addTaskToStorage(taskData);
+    renderTasks();
   }
   toggleEmptyState(taskList);
   Form.resetFormState();
@@ -110,7 +116,18 @@ taskList.addEventListener('click', (e) => {
       taskItem.classList.remove('overdue');
     }
     toggleTaskCompletionInStorage(taskId);
-    updateAllCountdowns();
+
+    if (taskItem.dataset.timerId) {
+      clearTimeout(Number(taskItem.dataset.timerId));
+    }
+
+    const timerId = setTimeout(() => {
+      renderTasks();
+      updateAllCountdowns();
+    }, 2200);
+
+    taskItem.dataset.timerId = timerId;
+
     return;
   }
 

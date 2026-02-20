@@ -53,3 +53,28 @@ export function formatTaskDate(dateString) {
   }
   return date.toLocaleDateString('pt-BR', options);
 }
+
+export function sortTasksIntelligently(tasks) {
+  const priorityWeights = { none: 0, low: 1, medium: 2, high: 3 };
+
+  return tasks.sort((a, b) => {
+    if (a.completed && !b.completed) return 1;
+    if (!a.completed && b.completed) return -1;
+
+    const timeA = a.dateTime ? new Date(a.dateTime).getTime() : null;
+    const timeB = b.dateTime ? new Date(b.dateTime).getTime() : null;
+
+    if (timeA && timeB) {
+      if (timeA !== timeB) return timeA - timeB;
+    } else if (timeA && !timeB) {
+      return -1;
+    } else if (!timeA && timeB) {
+      return 1;
+    }
+
+    const prioA = priorityWeights[a.priorityValue] || 0;
+    const prioB = priorityWeights[b.priorityValue] || 0;
+
+    return prioB - prioA;
+  });
+}
