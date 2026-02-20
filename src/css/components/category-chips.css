@@ -1,3 +1,52 @@
+.cat-card.personal,
+.cat-item input:checked + .cat-card.personal {
+  --task-color: var(--color-cat-personal);
+}
+.cat-card.entertainment,
+.cat-item input:checked + .cat-card.entertainment {
+  --task-color: var(--color-cat-entertainment);
+}
+.cat-card.home,
+.cat-item input:checked + .cat-card.home {
+  --task-color: var(--color-cat-home);
+}
+.cat-card.health,
+.cat-item input:checked + .cat-card.health {
+  --task-color: var(--color-cat-health);
+}
+.cat-card.shopping,
+.cat-item input:checked + .cat-card.shopping {
+  --task-color: var(--color-cat-shopping);
+}
+.cat-card.work,
+.cat-item input:checked + .cat-card.work {
+  --task-color: var(--color-cat-work);
+}
+.cat-card.study,
+.cat-item input:checked + .cat-card.study {
+  --task-color: var(--color-cat-study);
+}
+.cat-card.finance,
+.cat-item input:checked + .cat-card.finance {
+  --task-color: var(--color-cat-finance);
+}
+.cat-card.social,
+.cat-item input:checked + .cat-card.social {
+  --task-color: var(--color-cat-social);
+}
+.cat-card.pets,
+.cat-item input:checked + .cat-card.pets {
+  --task-color: var(--color-cat-pets);
+}
+.cat-card.selfcare,
+.cat-item input:checked + .cat-card.selfcare {
+  --task-color: var(--color-cat-selfcare);
+}
+.cat-card.workout,
+.cat-item input:checked + .cat-card.workout {
+  --task-color: var(--color-cat-workout);
+}
+
 .category-wrapper {
   width: 100%;
   margin-bottom: var(--spacing-md);
@@ -5,7 +54,7 @@
 
 .category-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   margin-top: var(--spacing-xs);
   gap: var(--spacing-sm);
 }
@@ -16,12 +65,12 @@
   align-items: center;
   justify-content: center;
   padding: 10px;
-  border: 1px solid var(--color-border-main);
+  border: 1px solid var(--task-color);
   border-radius: 8px;
   background-color: var(--color-bg-card);
   cursor: pointer;
   transition: all var(--transition-normal);
-  color: var(--color-text-light);
+  color: var(--task-color);
   opacity: 0.7;
 }
 
@@ -32,80 +81,10 @@
   color: currentColor;
 }
 
-/* --- ESTADOS ATIVOS (QUANDO SELECIONADO) --- */
-
-.cat-card.personal {
-  border-color: var(--color-cat-personal);
-  color: var(--color-cat-personal);
-}
-
-.cat-card.entertainment {
-  border-color: var(--color-cat-entertainment);
-  color: var(--color-cat-entertainment);
-}
-
-.cat-card.home {
-  border-color: var(--color-cat-home);
-  color: var(--color-cat-home);
-}
-
-.cat-card.health {
-  border-color: var(--color-cat-health);
-  color: var(--color-cat-health);
-}
-
-.cat-card.shopping {
-  border-color: var(--color-cat-shopping);
-  color: var(--color-cat-shopping);
-}
-
-.cat-card.work {
-  border-color: var(--color-cat-work);
-  color: var(--color-cat-work);
-}
-
-.cat-card.study {
-  border-color: var(--color-cat-study);
-  color: var(--color-cat-study);
-}
-
 .cat-item input:checked + .cat-card {
   opacity: 1;
+  color: var(--color-text-secondary);
+  background-color: var(--task-color);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
   transform: translateY(-2px);
-}
-
-.cat-item input:checked + .cat-card.personal {
-  background-color: var(--color-cat-personal);
-  color: var(--color-text-secondary);
-}
-
-.cat-item input:checked + .cat-card.entertainment {
-  background-color: var(--color-cat-entertainment);
-  color: var(--color-text-secondary);
-}
-
-.cat-item input:checked + .cat-card.home {
-  background-color: var(--color-cat-home);
-  color: var(--color-text-secondary);
-}
-
-.cat-item input:checked + .cat-card.health {
-  background-color: var(--color-cat-health);
-  color: var(--color-text-secondary);
-}
-
-.cat-item input:checked + .cat-card.shopping {
-  background-color: var(--color-cat-shopping);
-  color: var(--color-text-secondary);
-}
-
-.cat-item input:checked + .cat-card.work {
-  background-color: var(--color-cat-work);
-  color: var(--color-text-secondary);
-}
-
-.cat-item input:checked + .cat-card.study {
-  background-color: var(--color-cat-study);
-  color: var(--color-text-secondary);
 }

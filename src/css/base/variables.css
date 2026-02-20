@@ -43,6 +43,16 @@
   --color-cat-work-light: rgba(38, 18, 192, 0.1);
   --color-cat-study: #a40b5b;
   --color-cat-study-light: rgba(164, 11, 91, 0.1);
+  --color-cat-finance: #0ea5e9;
+  --color-cat-finance-light: rgba(14, 165, 233, 0.1);
+  --color-cat-social: #f43f5e;
+  --color-cat-social-light: rgba(244, 63, 94, 0.1);
+  --color-cat-pets: #8b4513;
+  --color-cat-pets-light: rgba(139, 69, 19, 0.1);
+  --color-cat-selfcare: #8b5cf6;
+  --color-cat-selfcare-light: rgba(139, 92, 246, 0.1);
+  --color-cat-workout: #ff5722;
+  --color-cat-workout-light: rgba(255, 87, 34, 0.1);
 
   /* --- Priorities --- */
   --color-prio-none: #9e9e9e;

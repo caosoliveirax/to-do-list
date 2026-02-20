@@ -26,6 +26,26 @@
   --task-color: var(--color-cat-study);
   --task-color-light: var(--color-cat-study-light);
 }
+.task-item.category-finance {
+  --task-color: var(--color-cat-finance);
+  --task-color-light: var(--color-cat-finance-light);
+}
+.task-item.category-social {
+  --task-color: var(--color-cat-social);
+  --task-color-light: var(--color-cat-social-light);
+}
+.task-item.category-pets {
+  --task-color: var(--color-cat-pets);
+  --task-color-light: var(--color-cat-pets-light);
+}
+.task-item.category-selfcare {
+  --task-color: var(--color-cat-selfcare);
+  --task-color-light: var(--color-cat-selfcare-light);
+}
+.task-item.category-workout {
+  --task-color: var(--color-cat-workout);
+  --task-color-light: var(--color-cat-workout-light);
+}
 
 .task-item {
   position: relative;

@@ -8,6 +8,11 @@ const CATEGORY_ICONS = {
   shopping: './src/assets/shopping.svg',
   work: './src/assets/work.svg',
   study: './src/assets/study.svg',
+  finance: './src/assets/finance.svg',
+  social: './src/assets/social.svg',
+  pets: './src/assets/pets.svg',
+  selfcare: './src/assets/selfcare.svg',
+  workout: './src/assets/workout.svg',
 };
 
 const PRIORITY_STARS = {
