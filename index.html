@@ -13,13 +13,23 @@
 </head>
 
 <body>
-  <header class="header-todo">
+  <header class="header">
     <h1 class="title">Slice Of Lice</h1>
     <time id="today"></time>
   </header>
   <main class="container">
     <section class="todo-container" aria-label="Lista de tarefas">
-      <h4 class="section-title">Minhas Tarefas</h4>
+      <div class="header-todo">
+        <h4 class="section-title">Minhas Tarefas</h4>
+        <div class="filter-tabs">
+          <button type="button" class="filter-tab" data-filter="all">
+            <span class="filter-dot"></span>
+            <span class="filter-label">Todas</span>
+            <span class="filter-count-badge" id="tab-count-all">12</span>
+          </button>
+
+        </div>
+      </div>
       <ul id="todo-list"></ul>
       <div id="empty-state" class="empty-state">
         <p>Sua lista está vazia. Que tal adicionar uma tarefa?</p>

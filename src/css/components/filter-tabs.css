@@ -1,0 +1,80 @@
+.filter-tabs {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.filter-tab {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+  height: 30px;
+  width: 136px;
+  padding: 0 12px;
+  border-radius: var(--border-radius-full);
+  border: none;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition:
+    background-color var(--transition-slow),
+    color var(--transition-slow);
+  white-space: nowrap;
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text-main);
+}
+
+.filter-dot {
+  display: flex;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--color-text-muted);
+  transition: background-color var(--transition-slow);
+  flex-shrink: 0;
+}
+
+.filter-label {
+  transition: color var(--transition-slow);
+}
+
+.filter-count-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: var(--border-radius-full);
+  font-size: 10px;
+  font-weight: 800;
+  background-color: rgba(0, 0, 0, 0.07);
+  color: inherit;
+  line-height: 1;
+}
+
+.filter-tab[data-filter='all'] .filter-dot {
+  color: var(--color-all);
+}
+
+.filter-tab[data-filter='all'] .filter-dot {
+  background-color: var(--color-all);
+}
+
+.filter-tab[data-filter='pending'] {
+  color: var(--color-pending);
+}
+
+.filter-tab[data-filter='pending'] .filter-dot {
+  background-color: var(--color-pending);
+}
+
+.filter-tab[data-filter='completed'] {
+  color: var(--color-completed);
+}
+
+.filter-tab[data-filter='completed'] .filter-dot {
+  background-color: var(--color-completed);
+}

@@ -21,19 +21,49 @@ const openButtonSection = document.getElementById('btn-open-form');
 const closeButtonSection = document.getElementById('close-form');
 const taskForm = document.getElementById('task-form');
 
+let currentFilter = 'all';
+
+const filterCycle = [
+  {
+    id: 'all',
+    label: 'Todas',
+  },
+  {
+    id: 'pending',
+    label: 'Pendentes',
+  },
+  {
+    id: 'completed',
+    label: 'Concluídas',
+  },
+];
+
 updateHeaderDate();
 
 export function renderTasks() {
-  const tasks = getTasksFromStorage();
+  const allTasks = getTasksFromStorage();
+  let tasksToRender = allTasks;
+
+  if (currentFilter === 'pending') {
+    tasksToRender = allTasks.filter((task) => !task.completed);
+  } else if (currentFilter === 'completed') {
+    tasksToRender = allTasks.filter((task) => task.completed);
+  }
 
   taskList.innerHTML = '';
 
-  const sortedTasks = sortTasksIntelligently(tasks);
+  const sortedTasks = sortTasksIntelligently(tasksToRender);
 
-  sortedTasks.forEach((task) => {
+  sortedTasks.forEach((task, index) => {
     const taskElement = createTaskItem(task);
+    taskElement.style.animationDelay = `${index * 0.25}s`;
     taskList.appendChild(taskElement);
   });
+
+  const badgeElement = document.querySelector('.filter-count-badge');
+  if (badgeElement) {
+    badgeElement.textContent = tasksToRender.length;
+  }
   toggleEmptyState(taskList);
 }
 
@@ -150,6 +180,22 @@ taskList.addEventListener('click', (e) => {
     return;
   }
 });
+
+const filterBtn = document.querySelector('.filter-tab');
+
+if (filterBtn) {
+  filterBtn.addEventListener('click', () => {
+    let currentIndex = filterCycle.findIndex((f) => f.id === currentFilter);
+
+    currentIndex = (currentIndex + 1) % filterCycle.length;
+    const nextState = filterCycle[currentIndex];
+    currentFilter = nextState.id;
+    filterBtn.dataset.filter = nextState.id;
+    filterBtn.querySelector('.filter-label').textContent = nextState.label;
+
+    renderTasks();
+  });
+}
 
 setInterval(updateAllCountdowns, 60000);
 updateAllCountdowns();

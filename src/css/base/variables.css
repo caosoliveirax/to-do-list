@@ -60,6 +60,11 @@
   --color-prio-medium: #f97316;
   --color-prio-high: #dc2626;
 
+  /* --- Filters --- */
+  --color-all: #1e293b;
+  --color-pending: #f97316;
+  --color-completed: #1abc9c;
+
   /* Typography */
   --font-family-base: 'Plus Jakarta Sans', sans-serif;
   --font-size-base: 1rem;

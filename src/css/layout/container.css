@@ -14,7 +14,7 @@
   }
 }
 
-.header-todo {
+.header {
   background-color: var(--color-primary);
   text-align: center;
   padding: 20px 40px 100px 40px;
@@ -32,6 +32,12 @@
     0 20px 25px -5px var(--shadow-light),
     0 8px 10px -6px var(--shadow-light);
   overflow: hidden;
+}
+
+.header-todo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 #todo-list {
