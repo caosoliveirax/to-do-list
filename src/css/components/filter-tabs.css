@@ -78,3 +78,9 @@
 .filter-tab[data-filter='completed'] .filter-dot {
   background-color: var(--color-completed);
 }
+
+@media screen and (max-width: 380px) {
+  .filter-tab {
+    width: 95%;
+  }
+}

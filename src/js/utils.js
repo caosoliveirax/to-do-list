@@ -41,17 +41,21 @@ export function formatTaskDate(dateString) {
   const currentYear = new Date().getFullYear();
   const taskYear = date.getFullYear();
 
-  const options = {
-    day: 'numeric',
-    month: 'long',
+  const day = date.getDate();
+  let month = date
+    .toLocaleDateString('pt-BR', { month: 'short' })
+    .replace('.', '');
+  month = month.charAt(0).toUpperCase() + month.slice(1);
+
+  const time = date.toLocaleTimeString('pt-BR', {
     hour: '2-digit',
     minute: '2-digit',
-  };
+  });
 
   if (taskYear !== currentYear) {
-    options.year = 'numeric';
+    return `${day} de ${month} de ${time}, ${taskYear}`;
   }
-  return date.toLocaleDateString('pt-BR', options);
+  return `${day} de ${month}, ${time}`;
 }
 
 export function sortTasksIntelligently(tasks) {

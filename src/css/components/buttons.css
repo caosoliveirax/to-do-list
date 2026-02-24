@@ -132,3 +132,10 @@ body:has(.form-container.open) .fab-add-task {
   opacity: 0;
   pointer-events: none;
 }
+
+@media screen and (max-width: 380px) {
+  .btn-action {
+    height: 28px;
+    width: 28px;
+  }
+}

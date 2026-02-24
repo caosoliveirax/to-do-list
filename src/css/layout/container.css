@@ -7,13 +7,6 @@
   flex-direction: column;
 }
 
-@media (min-width: 768px) {
-  .container {
-    max-width: 600px;
-    padding: 40px;
-  }
-}
-
 .header {
   background-color: var(--color-primary);
   text-align: center;
@@ -83,4 +76,10 @@
   grid-template-columns: 1fr 2fr;
   align-items: center;
   gap: var(--spacing-sm);
+}
+
+@media (max-width: 380px) {
+  .todo-container {
+    padding: 22px 18px;
+  }
 }
