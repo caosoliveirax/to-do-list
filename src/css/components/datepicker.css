@@ -82,7 +82,7 @@
 }
 
 .flatpickr-weekday {
-  color: var(--color-primary-light) !important;
+  color: var(--color-primary-faded) !important;
 }
 
 .flatpickr-day {
@@ -93,19 +93,19 @@
 
 .flatpickr-day.today {
   color: var(--color-primary);
-  border-color: var(--color-primary-light) !important;
+  border-color: var(--color-primary-faded) !important;
 }
 
 .flatpickr-day.selected {
   background-color: var(--color-primary);
-  border-color: var(--color-primary-light);
+  border-color: var(--color-primary-faded);
   font-weight: 700;
 }
 
 .flatpickr-day.today.selected {
   color: var(--color-text-secondary);
   background-color: var(--color-primary);
-  border-color: var(--color-primary-light);
+  border-color: var(--color-primary-faded);
 }
 
 .flatpickr-time {

@@ -1,8 +1,9 @@
 :root {
   /* --- Main --- */
   --color-primary: #e46b1b;
-  --color-primary-light: rgba(228, 107, 27, 0.5);
-  --color-primary-solid: #db8a53;
+  --color-primary-faded: rgba(228, 107, 27, 0.5);
+  --color-primary-muted: #db8a53;
+  --color-primary-subtle: rgba(228, 107, 27, 0.15);
 
   /* --- Feedback --- */
   --color-overdue: #ef4444;
@@ -68,6 +69,7 @@
   /* Typography */
   --font-family-base: 'Plus Jakarta Sans', sans-serif;
   --font-size-base: 1rem;
+  --font-size-xxs: 0.65rem;
   --font-size-xs: 0.75rem;
   --font-size-sm: 0.85rem;
   --font-size-lg: 1.25rem;

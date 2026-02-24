@@ -89,10 +89,18 @@ export function createTaskItem(task) {
   taskTitle.textContent = task.title;
   taskItem.appendChild(taskTitle);
 
+  const footerTask = document.createElement('div');
+  footerTask.classList.add('task-footer');
+
+  const timeContainer = document.createElement('div');
+  timeContainer.classList.add('time-container');
+
+  footerTask.appendChild(timeContainer);
+
   const taskDateTime = document.createElement('span');
   taskDateTime.classList.add('task-datetime');
   taskDateTime.textContent = formatTaskDate(task.dateTime);
-  taskItem.appendChild(taskDateTime);
+  timeContainer.appendChild(taskDateTime);
 
   const taskCountdown = document.createElement('span');
   taskCountdown.classList.add('task-countdown');
@@ -106,10 +114,7 @@ export function createTaskItem(task) {
       }
     }
   }
-  taskItem.appendChild(taskCountdown);
-
-  const footerTask = document.createElement('div');
-  footerTask.classList.add('task-footer');
+  timeContainer.appendChild(taskCountdown);
 
   const actionsContainer = document.createElement('div');
   actionsContainer.classList.add('actions-container');
@@ -148,7 +153,7 @@ export function createTaskItem(task) {
   taskCheckbox.name = 'task-checkbox';
   taskCheckbox.classList.add('task-checkbox');
   taskCheckbox.setAttribute('aria-label', 'Concluir tarefa');
-  footerTask.appendChild(taskCheckbox);
+  actionsContainer.appendChild(taskCheckbox);
 
   taskItem.appendChild(footerTask);
 

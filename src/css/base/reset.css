@@ -6,7 +6,7 @@
 }
 
 body {
-  background-color: var(--color-bg-main);
+  background-color: var(--color-primary-subtle);
 }
 
 fieldset {
