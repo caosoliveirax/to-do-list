@@ -83,3 +83,25 @@
     padding: 22px 18px;
   }
 }
+
+@media (min-width: 768px) {
+  .container {
+    min-width: auto;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  #todo-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1200px;
+    padding: 3rem 2rem;
+  }
+}
