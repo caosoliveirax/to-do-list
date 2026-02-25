@@ -40,7 +40,7 @@ const filterCycle = [
 
 updateHeaderDate();
 
-export function renderTasks() {
+export function renderTasks(animate = false) {
   const allTasks = getTasksFromStorage();
   let tasksToRender = allTasks;
 
@@ -56,7 +56,12 @@ export function renderTasks() {
 
   sortedTasks.forEach((task, index) => {
     const taskElement = createTaskItem(task);
-    taskElement.style.animationDelay = `${index * 0.25}s`;
+
+    if (animate) {
+      taskElement.classList.add('animate-cascade');
+      taskElement.style.animationDelay = `${index * 0.25}s`;
+    }
+
     taskList.appendChild(taskElement);
   });
 
@@ -67,7 +72,7 @@ export function renderTasks() {
   toggleEmptyState(taskList);
 }
 
-renderTasks();
+renderTasks(true);
 
 let currentRescheduleTaskId = null;
 const quickFp = initQuickRescheduleCalendar(() => currentRescheduleTaskId);
@@ -97,7 +102,7 @@ taskForm.addEventListener('submit', (e) => {
     }
   } else {
     addTaskToStorage(taskData);
-    renderTasks();
+    renderTasks(true);
   }
   toggleEmptyState(taskList);
   Form.resetFormState();
@@ -152,8 +157,15 @@ taskList.addEventListener('click', (e) => {
     }
 
     const timerId = setTimeout(() => {
-      renderTasks();
-      updateAllCountdowns();
+      if (document.startViewTransition) {
+        document.startViewTransition(() => {
+          renderTasks();
+          updateAllCountdowns();
+        });
+      } else {
+        renderTasks();
+        updateAllCountdowns();
+      }
     }, 2200);
 
     taskItem.dataset.timerId = timerId;
@@ -193,7 +205,7 @@ if (filterBtn) {
     filterBtn.dataset.filter = nextState.id;
     filterBtn.querySelector('.filter-label').textContent = nextState.label;
 
-    renderTasks();
+    renderTasks(true);
   });
 }
 

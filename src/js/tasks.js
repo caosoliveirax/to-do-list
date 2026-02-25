@@ -47,6 +47,7 @@ export function createTaskItem(task) {
 
   taskItem.dataset.id = task.id;
   if (task.dateTime) taskItem.dataset.deadline = task.dateTime;
+  taskItem.style.viewTransitionName = `task-${task.id}`;
 
   const taskHeader = document.createElement('div');
   taskHeader.classList.add('task-header');
